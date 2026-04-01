@@ -9,20 +9,25 @@ Ask the following questions interactively:
 **Question 1: Client/project name**
 - "What's the client/project name?" (free text)
 
-**Question 2: Frontend framework**
+**Question 2: Notion project page** *(ask this immediately after client name — Notion is the source of truth)*
+- "What's the Notion project page URL for this client?"
+- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
+- Once you have the Notion page, **fetch it immediately** using `notion-fetch` and read its properties (`Figma URL`, `Github URL`). Store any existing values — you'll use them to pre-populate later questions and to link the local repo to Notion in Step 3.
+
+**Question 3: Frontend framework**
 - Next.js (React) (Recommended)
 - SvelteKit
 - React Native (mobile app)
 - None / API only
 
-**Question 3: Backend**
+**Question 4: Backend**
 - Supabase (Recommended — auth, database, storage out of the box)
 - Cloudflare Workers + D1
 - Node.js (Express/Fastify)
 - Python (FastAPI)
 - None / frontend only
 
-**Question 4: Additional features**
+**Question 5: Additional features**
 (Allow multiple selections)
 - Authentication (email + social login)
 - File uploads / storage
@@ -32,12 +37,9 @@ Ask the following questions interactively:
 - Payments (Stripe)
 - None of the above
 
-**Question 5: Notion project page**
-- "What's the Notion project page URL for this client?"
-- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
-
 **Question 6: Figma file**
-- "Do you have a Figma file URL for this project?"
+- If a `Figma URL` was found in Notion → confirm: *"Found Figma URL in Notion: {url}. Use this?"*
+- Otherwise: "Do you have a Figma file URL for this project?"
   - Yes → paste URL
   - Not yet — I'll create one manually later
   - N/A

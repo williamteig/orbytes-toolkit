@@ -9,17 +9,22 @@ Ask the following questions interactively (use AskUserQuestion or equivalent pro
 **Question 1: Client name**
 - "What's the client/project name?" (free text)
 
-**Question 2: Service tier**
+**Question 2: Notion project page** *(ask this immediately after client name — Notion is the source of truth)*
+- "What's the Notion project page URL for this client?"
+- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
+- Once you have the Notion page, **fetch it immediately** using `notion-fetch` and read its properties (`Figma URL`, `Webflow URL`, `Github URL`). Store any existing values — you'll use them to pre-populate later questions and to link the local repo to Notion in Step 3.
+
+**Question 3: Service tier**
 - Landing Page — single page, fixed price
 - Full Website — multi-page with CMS, fixed price
 
-**Question 3: Deployment target**
+**Question 4: Deployment target**
 - Vercel (Recommended)
 - Cloudflare Pages
 - Netlify
 - Other
 
-**Question 4: Additional integrations**
+**Question 5: Additional integrations**
 (Allow multiple selections)
 - Webflow CMS (headless content from Webflow)
 - Blog / Content Collections
@@ -27,19 +32,17 @@ Ask the following questions interactively (use AskUserQuestion or equivalent pro
 - Analytics (Plausible/Fathom)
 - None of the above
 
-**Question 5: Notion project page**
-- "What's the Notion project page URL for this client?"
-- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
-
 **Question 6: Figma file**
-- "Do you have a Figma file URL for this project?"
+- If a `Figma URL` was found in Notion → confirm: *"Found Figma URL in Notion: {url}. Use this?"*
+- Otherwise: "Do you have a Figma file URL for this project?"
   - Yes → paste URL
   - Not yet — I'll create one manually later
   - N/A
 - **Gotcha:** If the URL contains query params like `?node-id=...&p=...&t=...`, strip them. Only store the base URL up to the file name slug (e.g. `https://www.figma.com/design/{fileKey}/{fileName}`).
 
 **Question 7: Webflow site**
-- "Do you have a Webflow site URL for this project?"
+- If a `Webflow URL` was found in Notion → confirm: *"Found Webflow URL in Notion: {url}. Use this?"*
+- Otherwise: "Do you have a Webflow site URL for this project?"
   - Yes → paste URL
   - Not yet — I'll set one up later
   - N/A (not using Webflow)
