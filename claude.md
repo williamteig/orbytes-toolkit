@@ -12,21 +12,10 @@ A GitHub repo (`williamteig/orbytes-claude-toolkit`) cloned at `/Users/williamte
 orbytes-claude-toolkit/
 ├── global/                    # Applies to ALL orbytes projects via ~/.claude/ symlinks
 │   ├── CLAUDE.md             # Orbytes identity, tools, pointer to rules + skills
-│   ├── commands/             # Symlinked into ~/.claude/commands/
-│   │   ├── task.md           # /task — execute or create Dev Pipeline tasks in Notion
-│   │   ├── new-orbytes-website.md # /new-orbytes-website — interactive website scaffolding
-│   │   └── new-orbytes-app.md     # /new-orbytes-app — interactive app scaffolding
-│   ├── rules/                # Symlinked into ~/.claude/rules/ — scoped, topic-based
-│   │   ├── coding.md         # Naming, commit style, code quality (alwaysApply: true)
-│   │   ├── git.md            # GitHub conventions, branch/PR patterns (alwaysApply: true)
-│   │   ├── workflow.md       # Stage order, approval gates, service tiers
-│   │   ├── figma.md          # Figma URL handling, branding rules, gotchas
-│   │   ├── notion.md         # Source of truth rules, database IDs, update patterns
-│   │   └── webflow.md        # Webflow site management, CMS modes, gotchas
-│   └── skills/               # Symlinked into ~/.claude/skills/
-│       ├── orbytes-context-sync/   # Syncs Notion ↔ Figma ↔ Webflow per client
-│       ├── orbytes-workflow-sync/  # Keeps Notion template + workflow.md in sync
-│       └── task-done/        # Commits, pushes, creates PR, updates Notion, merges
+│   ├── agents/               # Autonomous sub-agents spawned by commands/skills
+│   ├── commands/             # Slash commands (symlinked into ~/.claude/commands/)
+│   ├── rules/                # Topic-based rules (symlinked into ~/.claude/rules/)
+│   └── skills/               # Invocable skill modules (symlinked into ~/.claude/skills/)
 ├── website/                   # Copied into website projects during scaffolding
 │   ├── CLAUDE.md             # Astro + Tailwind conventions, SEO, performance targets
 │   └── templates/            # Starter files (package.json, astro.config, layouts, etc.)
@@ -40,7 +29,9 @@ orbytes-claude-toolkit/
 
 - **Global layer** lives in `~/.claude/` via symlinks. It applies to every Claude Code session automatically. Updating a file here updates it everywhere.
 - **Type-specific layers** (website/app) are copied into each project during scaffolding via the `/new-orbytes-website` or `/new-orbytes-app` commands. These become project-local and can be customized per client.
-- **Commands** are symlinked into `~/.claude/commands/` and available as slash commands in any Claude Code session.
+- **Commands** are prompt templates injected when a user types a slash command. They receive `$ARGUMENTS` and run inline in the conversation.
+- **Skills** are invocable modules with frontmatter metadata (`description`, `user-invocable`). Claude can trigger them automatically based on context, or the user can invoke them directly.
+- **Agents** are autonomous sub-processes spawned by commands or skills to handle complex, multi-step workflows independently. Unlike skills (which run inline), agents run in parallel, make their own judgement calls, and return a structured report. They live in `global/agents/` and are spawned via the `Agent` tool.
 
 ## The /task command
 
@@ -48,10 +39,10 @@ orbytes-claude-toolkit/
 
 - **Dev Pipeline Database ID:** `599e132701274298b902d85a529ebde5`
 - **Data Source:** `collection://277efdcf-8436-4503-84a6-20f3e9428ef7`
-- **Schema:** Task (title), Status (Not started / In progress / Done), Type (Feature / Bug / Chore / Research / Docs), Priority (Critical / High / Medium / Low), Project (TAT Website / TAT Connector / Orbytes / Personal), Due, Estimate (pts), Branch, Phase, Notes, ID (auto-increment)
+- **Schema:** Task (title), Status (Not started / In progress / Done), Type (Feature / Bug / Chore / Research / Docs), Priority (Critical / High / Medium / Low), Client Belonging (relation → Orbytes Clients), Blocked by / Blocking (self-referencing relations), Due, Estimate (pts), Branch, Phase, Notes, ID (auto-increment), Github link (rollup — UI only, not used by the command)
 
 Two modes:
-1. `/task [number]` — Fetch the task by ID, read its full Notion page content, execute the work, write findings back to the Notion page, update status. If the task has questions or needs clarification, ask before executing.
+1. `/task [number]` — Fetch the task by ID, check dependencies (Blocked by), resolve the correct repo via Client Belonging → Github URL, create a worktree branch (`dev-{ID}-{short-description}`), execute the work, write findings back to Notion, update status, and notify about unblocked tasks.
 2. `/task [description]` — Create a new task. Ask clarifying questions (project, type, priority), create the page in Notion, present it for approval.
 
 ## The scaffolding commands
@@ -105,6 +96,9 @@ Git does not track empty folders. If you create a new directory (e.g. `website/r
 
 **Gotcha — things placed at the wrong layer won't propagate correctly.**
 `global/` is symlinked and applies everywhere. `website/` and `app/` are copied at scaffold time and only affect new projects. A rule or skill placed in `website/` instead of `global/` will never reach app projects, and vice versa. When adding something new, confirm the right scope before placing it.
+
+**Gotcha — agents need to be added to install.sh/uninstall.sh.**
+Like commands, rules, and skills, agents live under `global/agents/` and must be symlinked by the install script. Adding a new agent without updating both scripts means it won't be available outside this repo.
 
 **Gotcha — macOS Finder can create stray folders with spaces.**
 Directories with spaces in their names (e.g. `Orbytes Claude Toolkit/`) can appear from accidental Finder interactions. They break shell glob patterns in the install script. Check `ls` before committing and delete any unexpected directories.
