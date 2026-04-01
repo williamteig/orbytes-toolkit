@@ -25,7 +25,7 @@ echo "  ✓ Global CLAUDE.md symlinked"
 
 echo ""
 echo "  Installing commands..."
-for cmd_file in "$TOOLKIT_DIR/commands"/*.md; do
+for cmd_file in "$TOOLKIT_DIR/global/commands"/*.md; do
   cmd_name="$(basename "$cmd_file")"
   target="$CLAUDE_COMMANDS_DIR/$cmd_name"
   if [ -L "$target" ]; then
@@ -38,6 +38,25 @@ for cmd_file in "$TOOLKIT_DIR/commands"/*.md; do
     echo "    + $cmd_name"
   fi
   ln -s "$cmd_file" "$target"
+done
+
+echo ""
+echo "  Installing global rules..."
+CLAUDE_RULES_DIR="$CLAUDE_DIR/rules"
+mkdir -p "$CLAUDE_RULES_DIR"
+for rule_file in "$TOOLKIT_DIR/global/rules"/*.md; do
+  rule_name="$(basename "$rule_file")"
+  target="$CLAUDE_RULES_DIR/$rule_name"
+  if [ -L "$target" ]; then
+    rm "$target"
+    echo "    ↻ $rule_name"
+  elif [ -f "$target" ]; then
+    mv "$target" "${target}.backup"
+    echo "    ⚠ Backed up existing: $rule_name"
+  else
+    echo "    + $rule_name"
+  fi
+  ln -s "$rule_file" "$target"
 done
 
 echo ""

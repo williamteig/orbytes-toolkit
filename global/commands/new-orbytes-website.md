@@ -23,8 +23,26 @@ Ask the following questions interactively (use AskUserQuestion or equivalent pro
 (Allow multiple selections)
 - Webflow CMS (headless content from Webflow)
 - Blog / Content Collections
-- Contact form- Analytics (Plausible/Fathom)
+- Contact form
+- Analytics (Plausible/Fathom)
 - None of the above
+
+**Question 5: Notion project page**
+- "What's the Notion project page URL for this client?"
+- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
+
+**Question 6: Figma file**
+- "Do you have a Figma file URL for this project?"
+  - Yes → paste URL
+  - Not yet — I'll create one manually later
+  - N/A
+- **Gotcha:** If the URL contains query params like `?node-id=...&p=...&t=...`, strip them. Only store the base URL up to the file name slug (e.g. `https://www.figma.com/design/{fileKey}/{fileName}`).
+
+**Question 7: Webflow site**
+- "Do you have a Webflow site URL for this project?"
+  - Yes → paste URL
+  - Not yet — I'll set one up later
+  - N/A (not using Webflow)
 
 ## Step 2 — Scaffold the project
 
@@ -51,7 +69,8 @@ Once you have the answers, create the project:
    ├── components/
    │   ├── ui/
    │   ├── sections/
-   │   └── layout/   ├── layouts/
+   │   └── layout/
+   ├── layouts/
    ├── pages/
    ├── styles/
    ├── assets/
@@ -70,18 +89,46 @@ Once you have the answers, create the project:
    - `README.md` with project name and basic setup instructions
    - `.env.example` with any needed environment variables
 
-7. **Create a Notion task** — Add an initial task to the Dev Pipeline:
+7. **Add Project Links to CLAUDE.md** — Append a `## Project Links` section to the project's `CLAUDE.md` with all known URLs:
+   ```markdown
+   ## Project Links
+   - **Notion:** <notion-url or "TBD">
+   - **GitHub:** https://github.com/williamteig/<project-name>
+   - **Figma:** <figma-url or "TBD — create manually">
+   - **Webflow:** <webflow-url or "TBD" or "N/A">
+   ```
+
+8. **Create a Notion task** — Add an initial task to the Dev Pipeline:
    - Task: "Project setup: {{CLIENT_NAME}} website"
    - Type: Chore
    - Priority: High
    - Project: Ask which project tag to use, or create suggestion
    - Status: In progress
-## Step 3 — Initialize and confirm
+
+## Step 3 — Initialize, create GitHub repo, and link
 
 1. Run `npm install` in the project directory
 2. Confirm the project builds with `npm run build`
 3. Initialize git: `git init && git add -A && git commit -m "Initial scaffold via orbytes-claude-toolkit"`
-4. Print a summary of what was created, including file tree and next steps
+4. **Create private GitHub repo** under your personal account:
+   ```bash
+   gh repo create williamteig/<project-name> --private --source=. --push
+   ```
+5. **Update Notion client record** — Set the following fields on the client's Notion project page:
+   - `Github URL` → the new repo URL (`https://github.com/williamteig/<project-name>`)
+   - `Figma URL` → the provided Figma URL (if one was given)
+   - `Webflow URL` → the provided Webflow URL (if one was given)
+   Use `notion-update-page` with the `update_properties` command.
+6. Print a summary of what was created, including file tree, project links, and next steps
+7. **If any links were "not yet" or "TBD"**, print a manual steps reminder:
+   ```
+   Manual steps remaining:
+   - [ ] Create Figma file and add URL to Notion (Figma URL field)
+   - [ ] Set up Webflow site and add URL to Notion (Webflow URL field)
+   - [ ] Update the Project Links section in this project's CLAUDE.md
+
+   Once added to Notion, run /orbytes-context-sync to pull the links into your session.
+   ```
 
 ## Toolkit source
 

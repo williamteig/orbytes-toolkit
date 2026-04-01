@@ -23,11 +23,23 @@ if [ -L "$GLOBAL_CLAUDE" ]; then
 fi
 
 # Remove commands
-for cmd_file in "$TOOLKIT_DIR/commands"/*.md; do  cmd_name="$(basename "$cmd_file")"
+for cmd_file in "$TOOLKIT_DIR/global/commands"/*.md; do  cmd_name="$(basename "$cmd_file")"
   target="$CLAUDE_COMMANDS_DIR/$cmd_name"
   if [ -L "$target" ]; then
     rm "$target"
     echo "  - Removed command: $cmd_name"
+    [ -f "${target}.backup" ] && mv "${target}.backup" "$target" && echo "    ↻ Restored backup"
+  fi
+done
+
+# Remove rules
+CLAUDE_RULES_DIR="$CLAUDE_DIR/rules"
+for rule_file in "$TOOLKIT_DIR/global/rules"/*.md; do
+  rule_name="$(basename "$rule_file")"
+  target="$CLAUDE_RULES_DIR/$rule_name"
+  if [ -L "$target" ]; then
+    rm "$target"
+    echo "  - Removed rule: $rule_name"
     [ -f "${target}.backup" ] && mv "${target}.backup" "$target" && echo "    ↻ Restored backup"
   fi
 done

@@ -11,19 +11,27 @@ A GitHub repo (`williamteig/orbytes-claude-toolkit`) cloned at `/Users/williamte
 ```
 orbytes-claude-toolkit/
 ├── global/                    # Applies to ALL orbytes projects via ~/.claude/ symlinks
-│   ├── CLAUDE.md             # Global rules: orbytes identity, dev pipeline, coding standards
-│   └── skills/               # Global skills symlinked into ~/.claude/skills/
+│   ├── CLAUDE.md             # Orbytes identity, tools, pointer to rules + skills
+│   ├── commands/             # Symlinked into ~/.claude/commands/
+│   │   ├── task.md           # /task — execute or create Dev Pipeline tasks in Notion
+│   │   ├── new-orbytes-website.md # /new-orbytes-website — interactive website scaffolding
+│   │   └── new-orbytes-app.md     # /new-orbytes-app — interactive app scaffolding
+│   ├── rules/                # Symlinked into ~/.claude/rules/ — scoped, topic-based
+│   │   ├── coding.md         # Naming, commit style, code quality (alwaysApply: true)
+│   │   ├── git.md            # GitHub conventions, branch/PR patterns (alwaysApply: true)
+│   │   ├── workflow.md       # Stage order, approval gates, service tiers
+│   │   ├── figma.md          # Figma URL handling, branding rules, gotchas
+│   │   ├── notion.md         # Source of truth rules, database IDs, update patterns
+│   │   └── webflow.md        # Webflow site management, CMS modes, gotchas
+│   └── skills/               # Symlinked into ~/.claude/skills/
 │       ├── orbytes-context-sync/   # Syncs Notion ↔ Figma ↔ Webflow per client
-│       └── orbytes-workflow-sync/  # Keeps Notion template + workflow.md in sync
+│       ├── orbytes-workflow-sync/  # Keeps Notion template + workflow.md in sync
+│       └── task-done/        # Commits, pushes, creates PR, updates Notion, merges
 ├── website/                   # Copied into website projects during scaffolding
 │   ├── CLAUDE.md             # Astro + Tailwind conventions, SEO, performance targets
 │   └── templates/            # Starter files (package.json, astro.config, layouts, etc.)
 ├── app/                       # Copied into app projects during scaffolding
 │   └── CLAUDE.md             # Architecture principles, security defaults, flexible stack
-├── commands/                  # Symlinked into ~/.claude/commands/
-│   ├── task.md               # /task — execute or create Dev Pipeline tasks in Notion
-│   ├── new-orbytes-website.md # /new-orbytes-website — interactive website scaffolding
-│   └── new-orbytes-app.md     # /new-orbytes-app — interactive app scaffolding
 ├── install.sh                 # Symlinks everything into ~/.claude/
 └── uninstall.sh               # Removes symlinks, restores backups
 ```
@@ -76,13 +84,27 @@ This toolkit is a living project. Areas to expand:
 - **App templates** — framework-specific starters for Next.js, SvelteKit, etc.
 - **MCP configuration** — standard `mcp-servers.json` for Notion, Figma, Webflow connections
 - **Hooks** — auto-context loading on session start, pattern extraction
-- **Rules** — language-specific coding rules (TypeScript, Python, etc.)
+- **More rules** — framework-specific gotchas for Astro, Next.js, Supabase, etc. in `website/rules/` and `app/rules/`
 - **Testing** — verify commands work end-to-end in fresh Claude Code sessions
 
 ## How to work on this project
 
 - Edit files directly in the repo at `/Users/williamteig/Documents/AppDev/orbytes-claude-toolkit`
-- Changes to `global/`, `commands/`, and `global/skills/` take effect immediately everywhere (they're symlinked)
+- Changes to `global/` (CLAUDE.md, commands/, skills/, rules/) take effect immediately everywhere (they're symlinked)
 - Changes to `website/` and `app/` only affect newly scaffolded projects
 - Commit and push to keep the GitHub remote in sync
 - The install script is idempotent — safe to re-run after adding new commands or skills
+
+## Gotchas
+
+**Gotcha — adding a new category requires updating both scripts.**
+`install.sh` and `uninstall.sh` only handle the categories they know about (commands, rules, skills). If you add a new top-level category (e.g. `global/hooks/`), you must add the corresponding symlink loop to both scripts, otherwise the new files will never be wired up.
+
+**Gotcha — empty directories are invisible to git.**
+Git does not track empty folders. If you create a new directory (e.g. `website/rules/`) without putting a file in it, it won't be committed and will silently disappear after a fresh clone. Add a real file before committing.
+
+**Gotcha — things placed at the wrong layer won't propagate correctly.**
+`global/` is symlinked and applies everywhere. `website/` and `app/` are copied at scaffold time and only affect new projects. A rule or skill placed in `website/` instead of `global/` will never reach app projects, and vice versa. When adding something new, confirm the right scope before placing it.
+
+**Gotcha — macOS Finder can create stray folders with spaces.**
+Directories with spaces in their names (e.g. `Orbytes Claude Toolkit/`) can appear from accidental Finder interactions. They break shell glob patterns in the install script. Check `ls` before committing and delete any unexpected directories.

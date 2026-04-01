@@ -23,13 +23,25 @@ Ask the following questions interactively:
 - None / frontend only
 
 **Question 4: Additional features**
-(Allow multiple selections)- Authentication (email + social login)
+(Allow multiple selections)
+- Authentication (email + social login)
 - File uploads / storage
 - Real-time / websockets
 - Scheduled jobs / cron
 - Email notifications (Resend/Postmark)
 - Payments (Stripe)
 - None of the above
+
+**Question 5: Notion project page**
+- "What's the Notion project page URL for this client?"
+- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
+
+**Question 6: Figma file**
+- "Do you have a Figma file URL for this project?"
+  - Yes → paste URL
+  - Not yet — I'll create one manually later
+  - N/A
+- **Gotcha:** If the URL contains query params like `?node-id=...&p=...&t=...`, strip them. Only store the base URL up to the file name slug (e.g. `https://www.figma.com/design/{fileKey}/{fileName}`).
 
 ## Step 2 — Scaffold the project
 
@@ -50,6 +62,7 @@ Once you have the answers, create the project:
    - If **SvelteKit**: run `npx sv create` with TypeScript
    - If **React Native**: run `npx create-expo-app` with TypeScript template
    - If **API only**: create a minimal Node/Python project structure
+
 5. **Set up the backend:**
    - If **Supabase**: create `src/lib/supabase.ts` client, add `.env.example` with `SUPABASE_URL` and `SUPABASE_ANON_KEY`
    - If **Cloudflare Workers**: create `wrangler.toml` and worker entry point
@@ -70,17 +83,42 @@ Once you have the answers, create the project:
    - `README.md` with project name, stack overview, and setup instructions
    - `docker-compose.yml` if local services are needed (database, etc.)
 
-8. **Create a Notion task** — Add initial task to the Dev Pipeline:
+8. **Add Project Links to CLAUDE.md** — Append a `## Project Links` section to the project's `CLAUDE.md` with all known URLs:
+   ```markdown
+   ## Project Links
+   - **Notion:** <notion-url or "TBD">
+   - **GitHub:** https://github.com/williamteig/<project-name>
+   - **Figma:** <figma-url or "TBD — create manually" or "N/A">
+   ```
+
+9. **Create a Notion task** — Add initial task to the Dev Pipeline:
    - Task: "Project setup: {{CLIENT_NAME}} app"
    - Type: Chore
    - Priority: High
    - Status: In progress
-## Step 3 — Initialize and confirm
+
+## Step 3 — Initialize, create GitHub repo, and link
 
 1. Install dependencies
 2. Verify the project builds/starts
 3. Initialize git: `git init && git add -A && git commit -m "Initial scaffold via orbytes-claude-toolkit"`
-4. Print a summary: chosen stack, file tree, environment variables needed, and next steps
+4. **Create private GitHub repo** under your personal account:
+   ```bash
+   gh repo create williamteig/<project-name> --private --source=. --push
+   ```
+5. **Update Notion client record** — Set the following fields on the client's Notion project page:
+   - `Github URL` → the new repo URL (`https://github.com/williamteig/<project-name>`)
+   - `Figma URL` → the provided Figma URL (if one was given)
+   Use `notion-update-page` with the `update_properties` command.
+6. Print a summary: chosen stack, file tree, project links, environment variables needed, and next steps
+7. **If any links were "not yet" or "TBD"**, print a manual steps reminder:
+   ```
+   Manual steps remaining:
+   - [ ] Create Figma file and add URL to Notion (Figma URL field)
+   - [ ] Update the Project Links section in this project's CLAUDE.md
+
+   Once added to Notion, run /orbytes-context-sync to pull the links into your session.
+   ```
 
 ## Toolkit source
 
