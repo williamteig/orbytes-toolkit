@@ -78,6 +78,25 @@ for skill_dir in "$TOOLKIT_DIR/global/skills"/*/; do
   ln -s "$skill_dir" "$target"
 done
 
+echo ""
+echo "  Installing global agents..."
+CLAUDE_AGENTS_DIR="$CLAUDE_DIR/agents"
+mkdir -p "$CLAUDE_AGENTS_DIR"
+for agent_file in "$TOOLKIT_DIR/global/agents"/*.md; do
+  agent_name="$(basename "$agent_file")"
+  target="$CLAUDE_AGENTS_DIR/$agent_name"
+  if [ -L "$target" ]; then
+    rm "$target"
+    echo "    ↻ $agent_name"
+  elif [ -f "$target" ]; then
+    mv "$target" "${target}.backup"
+    echo "    ⚠ Backed up existing: $agent_name"
+  else
+    echo "    + $agent_name"
+  fi
+  ln -s "$agent_file" "$target"
+done
+
 ENV_FILE="$CLAUDE_DIR/.env"
 if [ -f "$ENV_FILE" ]; then
   grep -v "ORBYTES_TOOLKIT_PATH" "$ENV_FILE" > "${ENV_FILE}.tmp" || true

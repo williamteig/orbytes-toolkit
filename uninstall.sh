@@ -55,6 +55,18 @@ for skill_dir in "$TOOLKIT_DIR/global/skills"/*/; do
   fi
 done
 
+# Remove agents
+CLAUDE_AGENTS_DIR="$CLAUDE_DIR/agents"
+for agent_file in "$TOOLKIT_DIR/global/agents"/*.md; do
+  agent_name="$(basename "$agent_file")"
+  target="$CLAUDE_AGENTS_DIR/$agent_name"
+  if [ -L "$target" ]; then
+    rm "$target"
+    echo "  - Removed agent: $agent_name"
+    [ -f "${target}.backup" ] && mv "${target}.backup" "$target" && echo "    ↻ Restored backup"
+  fi
+done
+
 # Remove env var
 ENV_FILE="$CLAUDE_DIR/.env"
 if [ -f "$ENV_FILE" ]; then
