@@ -25,10 +25,13 @@ That's it. All commands, rules, and skills update across every project instantly
 
 ### Commands
 
+`/task` uses the argument to decide what to do: a number fetches and executes an existing task; any other text creates a new one.
+
 | Command | What it does |
 |---------|-------------|
 | `/task 13` | Reads task #13 from the Dev Pipeline, executes it, writes findings back to Notion, updates status |
-| `/task Fix the mobile nav` | Creates a new task in the Dev Pipeline with interactive prompts for project, type, priority || `/new-orbytes-website` | Interactive onboarding → scaffolds an Astro + Tailwind project with orbytes defaults |
+| `/task Fix the mobile nav` | Creates a new task in the Dev Pipeline with interactive prompts for project, type, priority |
+| `/new-orbytes-website` | Interactive onboarding → scaffolds an Astro + Tailwind project with orbytes defaults |
 | `/new-orbytes-app` | Interactive onboarding → scaffolds a custom app project (Next.js, SvelteKit, etc.) |
 
 ### Global layer (applies to all projects)

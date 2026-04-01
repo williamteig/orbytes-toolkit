@@ -19,9 +19,10 @@ This skill keeps your context fresh and accurate when working on orbytes.io clie
 
 - **Notion** holds the master project record — stages, contacts, copy, brand notes, checklists
 - **Figma** holds design and branding assets — the Figma URL is stored in the Notion client record
-- **Webflow** holds the live build — the Webflow Designer URL is stored in the Notion client record
+- **Github** holds the live build — the github repo URL is stored in the Notion client record
+- There may be a **webflow site** associated with the project, but not always. This can be considered a legacy feature, as sites are migrating to astro.
 
-The goal is simple: before doing anything on a client project, load what you need. After making changes in Figma or Webflow, write the relevant updates back to Notion so it never falls out of date.
+The goal is simple: before doing anything on a client project, load what you need. After making changes in Figma or Github, write the relevant updates back to Notion so it never falls out of date.
 
 ---
 ## Step 1 — Load client context from Notion
@@ -35,8 +36,9 @@ Data source: collection://3282204c-5659-80e1-ad2b-000bdf0d92f2
 
 Use `notion-search` to find the client page if you don't have the ID, then `notion-fetch` on the page to get:
 - Current stage (which Stage X section has recent activity)
-- Webflow URL (field: `Webflow URL`)
+- Github URL (field: `Github URL`)
 - Figma URL (field: `Figma URL`)
+- Webflow URL (field: `Webflow URL`) (optional)
 - Contact details, tier, launch date
 - Brand notes (inside the Branding Checklist sub-database — look for a "Brand Notes" page)
 
