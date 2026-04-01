@@ -91,15 +91,36 @@ If `$ARGUMENTS` is a number (e.g., `13`), this is a task ID. Do the following:
 If `$ARGUMENTS` is text (not a number), this is a new task description. Do the following:
 
 1. **Parse the description** — Extract the task intent from the text.
-2. **Ask clarifying questions** — Use interactive prompts to confirm details:
-   - **Project**: Which project is this for? (TAT Website / TAT Connector / Orbytes / Personal)
+
+2. **Resolve the project** — Determine which client this task belongs to. Do NOT use a hardcoded list of project names.
+
+   **a) Check the current directory:**
+   Run `git remote get-url origin 2>/dev/null` in the current working directory.
+
+   **b) If a git remote exists (you're inside a repo):**
+   - Query the Orbytes Clients DB (`collection://3282204c-5659-80e1-ad2b-000bdf0d92f2`) for a client whose `Github URL` matches the current remote.
+   - If exactly one match → auto-suggest it: *"Detected project: {client name} (from current repo). Correct?"*
+   - If the user confirms → use that client.
+   - If the user says no → fall back to step (c).
+   - If no client matches the current remote → tell the user: *"No client in Notion has Github URL matching {remote}."* Then fall back to step (c) and also offer to link the current repo to a client.
+
+   **c) If no remote, no match, or user rejected the auto-detect:**
+   - Fetch all clients from the Orbytes Clients DB and present them as selectable options.
+   - Never hardcode project names — always query Notion dynamically.
+
+   **d) After selecting a client, check its `Github URL`:**
+   - If the client has no `Github URL` and you're in a git repo, ask for explicit consent before linking: *"{client name} has no Github URL linked. Would you like me to set it to {current remote}?"*
+   - Only update the client's `Github URL` field in Notion if the user explicitly confirms. Never auto-fill this field.
+   - If the user declines → proceed with task creation anyway, but warn that Mode A (executing the task) will fail without a linked repo.
+
+3. **Ask remaining clarifying questions** — Use interactive prompts to confirm:
    - **Type**: What kind of task? (Feature / Bug / Chore / Research / Docs)
    - **Priority**: How urgent? (Critical / High / Medium / Low)
    - Optionally ask about Phase and Due date if not obvious
 
-3. **Create the task** — Use `notion-create-pages` to create a new page in the Dev Pipeline database with:
+4. **Create the task** — Use `notion-create-pages` to create a new page in the Dev Pipeline database with:
    - Task (title): the task description, cleaned up into a clear title
-   - Project: selected project
+   - Client Belonging: the resolved client (relation to Orbytes Clients DB)
    - Type: selected type
    - Priority: selected priority
    - Status: "Not started"
@@ -107,7 +128,7 @@ If `$ARGUMENTS` is text (not a number), this is a new task description. Do the f
    - Phase: if provided
    - Due: if provided
 
-4. **Confirm** — Show the user the created task with its auto-assigned ID and a link to the Notion page. Ask if they want to start working on it immediately (which would trigger Mode A behaviour).
+5. **Confirm** — Show the user the created task with its auto-assigned ID and a link to the Notion page. Ask if they want to start working on it immediately (which would trigger Mode A behaviour).
 
 ## Important context
 
