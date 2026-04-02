@@ -25,3 +25,6 @@ App projects (Custom Build tier) do not use Webflow. Only website projects (Land
 
 **Gotcha — Webflow CMS headless vs. native.**
 When a website project selects "Webflow CMS" as an integration, it means using Webflow as a headless CMS (content pulled via API into Astro). This is different from a native Webflow site build. Clarify which mode is in use before making CMS changes.
+
+**Gotcha — do not crawl local files when working on Webflow pages.**
+When gathering context for a Webflow page or section, only use the Webflow MCP tools (`element_tool`, `style_tool`, `de_page_tool`, etc.) and the specific Webflow page/site provided. Do NOT search local project files for similarly named pages or components — Webflow pages are managed entirely through the Webflow API, and local files with similar names are unrelated. Crawling local files wastes context and can lead to incorrect assumptions about the Webflow page structure.
