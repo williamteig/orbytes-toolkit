@@ -124,11 +124,42 @@ If `$ARGUMENTS` is text (not a number), this is a new task description. Do the f
    - Type: selected type
    - Priority: selected priority
    - Status: "Not started"
-   - Notes: any additional context from the user's description
+   - Notes: a brief one-liner summary (for table view readability)
    - Phase: if provided
    - Due: if provided
 
-5. **Confirm** — Show the user the created task with its auto-assigned ID and a link to the Notion page. Ask if they want to start working on it immediately (which would trigger Mode A behaviour).
+5. **Write detailed page content** — After creating the page, use `notion-update-page` with `replace_content` to write a thorough description into the page body. This is critical — Mode A reads page content to understand what to do. An empty page body means the executing agent has almost no context.
+
+   Structure the page content as agent-executable instructions:
+
+   ```markdown
+   # Agent Instructions: {task title}
+
+   ## Objective
+   {One paragraph: what needs to happen and why}
+
+   ## Context
+   {Relevant details: client name, affected files/URLs, design system info, staging links, related tasks}
+
+   ## Steps
+   ### 1. {Step name}
+   {What to do, which tools to use, what to look for}
+   ### 2. {Step name}
+   ...
+
+   ## Acceptance Criteria
+   - [ ] {Concrete, verifiable outcome}
+   - [ ] {Another outcome}
+   ```
+
+   Guidelines for page content:
+   - **Be specific** — include file paths, URLs, component names, Figma node IDs, Webflow page slugs — anything the executing agent needs to avoid guessing
+   - **Reference tools** — if the task needs Figma MCP, Webflow MCP, or Chrome, say so explicitly with the tool names and expected inputs
+   - **Fetch context if needed** — if the task references a Figma file, Webflow site, or staging URL from the client's Notion page, fetch those URLs and include them in the instructions
+   - **Scale to task complexity** — a simple bug fix might need 3-5 lines of context. A design task like building a Figma page needs the full treatment (design system, section breakdowns, reference frames). Match the detail level to the task.
+   - **Don't pad** — if the task is straightforward, keep it short. The goal is giving Mode A enough context to execute without asking the user for clarification, not writing a spec for the sake of length.
+
+6. **Confirm** — Show the user the created task with its auto-assigned ID and a link to the Notion page. Ask if they want to start working on it immediately (which would trigger Mode A behaviour).
 
 ## Important context
 
