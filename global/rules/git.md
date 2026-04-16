@@ -21,7 +21,7 @@ alwaysApply: true
 
 - PR title: short, under 70 characters
 - PR body: summary bullets + test plan checklist
-- Link the Notion task in the PR body
+- Reference the task from `project.md` in the PR body
 
 ## Gotchas
 
@@ -29,7 +29,7 @@ alwaysApply: true
 All orbytes repos use `main` as the primary branch. Force-pushing to main can destroy history. Always push to a feature branch and merge via PR.
 
 **Gotcha — no slashes in branch names.**
-Use hyphens only in branch names (e.g. `dev-13-fix-contact-form`, not `DEV-13/fix-contact-form`). Slashes in branch names resolve to `+` in some contexts (Notion URLs, CI systems) and cause parsing issues.
+Use hyphens only in branch names (e.g. `dev-13-fix-contact-form`, not `DEV-13/fix-contact-form`). Slashes in branch names resolve to `+` in some contexts (CI systems, URL encoding) and cause parsing issues.
 
 **Gotcha — strip tracking params from external URLs before storing.**
-When storing URLs (Figma, Webflow, Notion) in config files or Notion fields, strip any tracking or session query params. Store only the canonical base URL.
+When storing URLs (Figma, Webflow, etc.) in config files or `project.md` frontmatter, strip any tracking or session query params. Store only the canonical base URL.

@@ -1,0 +1,4 @@
+{
+  "_comment": "Copy to mcp.json in this folder, delete _comment, and add real MCP servers per https://cursor.com/docs — project-scoped MCP loads from .cursor/mcp.json",
+  "mcpServers": {}
+}

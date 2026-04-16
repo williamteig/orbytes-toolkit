@@ -1,140 +1,75 @@
-# /new-orbytes-website — Scaffold a new orbytes website project
+# /new-orbytes-website — Onboard a new orbytes website client
 
-The user wants to create a new orbytes website client project. Walk them through the interactive onboarding, then scaffold the project.
+This command orchestrates the full client onboarding flow for a new orbytes website project. It runs three steps in sequence, tracking progress so you can resume if interrupted.
 
-## Step 1 — Gather project details
+## Onboarding steps
 
-Ask the following questions interactively (use AskUserQuestion or equivalent prompts):
+| Step | Skill | What it does | Output |
+|------|-------|--------------|--------|
+| 1 | `orbytes-qualify` | Client qualification interview | `qualification-summary.md` |
+| 2 | `orbytes-scaffold` | Create project directory, Obsidian vault, config, git repo | Project directory with `.obsidian/`, `project.md`, `brand.md`, `CLAUDE.md`, etc. |
+| 3 | `orbytes-discovery` | Process discovery questionnaire responses | `discovery-brief.md` |
 
-**Question 1: Client name**
-- "What's the client/project name?" (free text)
+## How to run
 
-**Question 2: Notion project page** *(ask this immediately after client name — Notion is the source of truth)*
-- "What's the Notion project page URL for this client?"
-- Allow free text (paste URL) or offer: "Should I search Notion for the client?" — if yes, use `notion-search` with the client name to find it
-- Once you have the Notion page, **fetch it immediately** using `notion-fetch` and read its properties (`Figma URL`, `Webflow URL`, `Github URL`). Store any existing values — you'll use them to pre-populate later questions and to link the local repo to Notion in Step 3.
+Work through each step in order. After completing each step, print a status update showing which steps are done:
 
-**Question 3: Service tier**
-- Landing Page — single page, fixed price
-- Full Website — multi-page with CMS, fixed price
+```
+Onboarding: [Client Name]
+  [x] Step 1 — Qualify
+  [ ] Step 2 — Scaffold
+  [ ] Step 3 — Discovery
+```
 
-**Question 4: Deployment target**
-- Vercel (Recommended)
-- Cloudflare Pages
-- Netlify
-- Other
+### Step 1 — Qualify
 
-**Question 5: Additional integrations**
-(Allow multiple selections)
-- Webflow CMS (headless content from Webflow)
-- Blog / Content Collections
-- Contact form
-- Analytics (Plausible/Fathom)
-- None of the above
+Invoke the `orbytes-qualify` skill. Walk through the qualification checklist interactively. When complete, hold the qualification summary — the project directory doesn't exist yet.
 
-**Question 6: Figma file**
-- If a `Figma URL` was found in Notion → confirm: *"Found Figma URL in Notion: {url}. Use this?"*
-- Otherwise: "Do you have a Figma file URL for this project?"
-  - Yes → paste URL
-  - Not yet — I'll create one manually later
-  - N/A
-- **Gotcha:** If the URL contains query params like `?node-id=...&p=...&t=...`, strip them. Only store the base URL up to the file name slug (e.g. `https://www.figma.com/design/{fileKey}/{fileName}`).
+If the qualification reveals the client is **not ready** (e.g. needs branding first, no copy, major blockers), flag this clearly. Ask whether to proceed to scaffold anyway (the project directory is still useful for tracking) or pause onboarding.
 
-**Question 7: Webflow site**
-- If a `Webflow URL` was found in Notion → confirm: *"Found Webflow URL in Notion: {url}. Use this?"*
-- Otherwise: "Do you have a Webflow site URL for this project?"
-  - Yes → paste URL
-  - Not yet — I'll set one up later
-  - N/A (not using Webflow)
+### Step 2 — Scaffold
 
-## Step 2 — Scaffold the project
+Invoke the `orbytes-scaffold` skill. Pass forward all context gathered during qualification (client name, package, branding status, etc.) so the scaffold skill doesn't re-ask those questions.
 
-Once you have the answers, create the project:
+The scaffold step will:
+- Create the project directory with Obsidian vault (`.obsidian/`)
+- Generate `project.md`, `brand.md`, `CLAUDE.md`
+- Save `qualification-summary.md` into the project directory
+- Set up stack-specific files
+- Init git and create GitHub repo
 
-1. **Create the project directory** using the client name (kebab-case)
+After scaffold completes, remind the user: **"Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)"**
 
-2. **Copy global layer:**
-   - Copy the global `CLAUDE.md` into the project root as `CLAUDE.md`
-   - Copy global skills into `.claude/skills/`
+### Step 3 — Discovery
 
-3. **Copy website layer:**
-   - Merge the website `CLAUDE.md` content into the project's `CLAUDE.md` (append after global rules)
-   - Copy website templates into the project root:
-     - `package.json` (replace `{{PROJECT_NAME}}` with the project name)
-     - `astro.config.mjs` (replace `{{SITE_URL}}` with a placeholder or provided URL)
-     - `tsconfig.json`
-     - `src/layouts/BaseLayout.astro` (replace `{{DEFAULT_DESCRIPTION}}`)
-     - `src/pages/index.astro` (replace `{{PROJECT_NAME}}`)
+Invoke the `orbytes-discovery` skill. This step processes the client's completed discovery questionnaire.
 
-4. **Create the directory structure:**
-   ```
-   src/
-   ├── components/
-   │   ├── ui/
-   │   ├── sections/
-   │   └── layout/
-   ├── layouts/
-   ├── pages/
-   ├── styles/
-   ├── assets/
-   └── lib/
-   ```
+**Important:** Discovery is asynchronous — the client fills out the questionnaire on their own time (days, not minutes). If responses aren't available yet:
+- Print the status showing Steps 1-2 complete, Step 3 pending
+- Tell the user: "Run `/orbytes-discovery` in this project once the client submits their questionnaire responses"
+- End the command — don't block waiting
 
-5. **Apply customizations based on answers:**
-   - If **Webflow CMS** selected: add `src/lib/webflow.ts` with a placeholder API client
-   - If **Blog** selected: create `src/content/config.ts` with a blog collection schema
-   - If **Contact form** selected: create `src/components/sections/ContactForm.astro` placeholder
-   - If **Analytics** selected: add analytics snippet to `BaseLayout.astro`
+If responses ARE available (pasted, emailed, or already in the project directory), proceed with analysis and generate `discovery-brief.md`.
 
-6. **Create supporting files:**
-   - `.gitignore` (Astro defaults)
-   - `.prettierrc` with Astro plugin config
-   - `README.md` with project name and basic setup instructions
-   - `.env.example` with any needed environment variables
+## Resuming
 
-7. **Add Project Links to CLAUDE.md** — Append a `## Project Links` section to the project's `CLAUDE.md` with all known URLs:
-   ```markdown
-   ## Project Links
-   - **Notion:** <notion-url or "TBD">
-   - **GitHub:** https://github.com/williamteig/<project-name>
-   - **Figma:** <figma-url or "TBD — create manually">
-   - **Webflow:** <webflow-url or "TBD" or "N/A">
-   ```
+If the user runs `/new-orbytes-website` and a project directory already exists for this client:
+- Check which output files exist (`qualification-summary.md`, `project.md`, `discovery-brief.md`)
+- Show the status checklist
+- Resume from the next incomplete step
 
-8. **Create a Notion task** — Add an initial task to the Dev Pipeline:
-   - Task: "Project setup: {{CLIENT_NAME}} website"
-   - Type: Chore
-   - Priority: High
-   - Project: Ask which project tag to use, or create suggestion
-   - Status: In progress
+## After onboarding
 
-## Step 3 — Initialize, create GitHub repo, and link
+When all three steps are complete, print the final status and next steps:
 
-1. Run `npm install` in the project directory
-2. Confirm the project builds with `npm run build`
-3. Initialize git: `git init && git add -A && git commit -m "Initial scaffold via orbytes-claude-toolkit"`
-4. **Create private GitHub repo** under your personal account:
-   ```bash
-   gh repo create williamteig/<project-name> --private --source=. --push
-   ```
-5. **Update Notion client record** — Set the following fields on the client's Notion project page:
-   - `Github URL` → the new repo URL (`https://github.com/williamteig/<project-name>`)
-   - `Figma URL` → the provided Figma URL (if one was given)
-   - `Webflow URL` → the provided Webflow URL (if one was given)
-   Use `notion-update-page` with the `update_properties` command.
-6. Print a summary of what was created, including file tree, project links, and next steps
-7. **If any links were "not yet" or "TBD"**, print a manual steps reminder:
-   ```
-   Manual steps remaining:
-   - [ ] Create Figma file and add URL to Notion (Figma URL field)
-   - [ ] Set up Webflow site and add URL to Notion (Webflow URL field)
-   - [ ] Update the Project Links section in this project's CLAUDE.md
+```
+Onboarding complete: [Client Name]
+  [x] Step 1 — Qualify
+  [x] Step 2 — Scaffold
+  [x] Step 3 — Discovery
 
-   Once added to Notion, run /orbytes-context-sync to pull the links into your session.
-   ```
-
-## Toolkit source
-
-The template files for this command are in the orbytes-claude-toolkit repository. The install script sets the `ORBYTES_TOOLKIT_PATH` environment variable pointing to where the repo is cloned. Read templates from `$ORBYTES_TOOLKIT_PATH/website/templates/` and global files from `$ORBYTES_TOOLKIT_PATH/global/`.
-
-If `ORBYTES_TOOLKIT_PATH` is not set, ask the user where they cloned the toolkit repo.
+Next steps:
+  1. Open project folder as Obsidian vault
+  2. Review discovery-brief.md
+  3. Begin Stage 1 — Research (or Stage X — Branding if Softriver add-on)
+```

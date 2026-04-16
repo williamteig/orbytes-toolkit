@@ -13,16 +13,16 @@ Never skip stages or begin a later stage before the prior approval gate is passe
 - **Stage 1 — Research & Discovery**
 - **Stage 2 — Content Writeup + Sitemap** → ✅ Approval Gate 1
 - **Stage 3 — Design** (Figma — lightweight, homepage + one page max) → ✅ Approval Gate 2
-- **Stage 4 — Development** (Webflow — primary design happens here) → ✅ Approval Gate 3
+- **Stage 4 — Development** (implementation — typically **Astro + Tailwind** for sites; **Webflow** only when that engagement includes a Webflow build) → ✅ Approval Gate 3
 - **Stage 5 — Launch & Handover**
 
 ## Key Rules
 
 - Three approval gates only — after copy, after design, after development
-- Notion workspace is only created once a client is qualified
+- `project.md` is the source of truth — always read it before starting work
 - Branding (Softriver) is always whitelabeled — never mention Softriver to clients
-- Figma design is intentionally lightweight — Webflow is the primary design tool
-- The qualification form lives on external platforms — never recreate it in Notion
+- Figma design is intentionally lightweight — site implementation defaults to the stack chosen in `project.md` (Astro, Framer, or Webflow)
+- The qualification form lives on external platforms — project repo is only created once a client is qualified
 
 ## Service Tiers
 

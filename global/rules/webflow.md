@@ -7,21 +7,31 @@ alwaysApply: false
 
 ## Role in the Stack
 
-Webflow is the primary design and build tool for orbytes websites. Unlike Figma (which is intentionally lightweight), Webflow is where the full design happens — layout, typography, component styling, CMS structure.
+Webflow is **optional** and **project-specific**: some website engagements use a **native Webflow Designer build** or **Webflow CMS** feeding a static site; many new sites are **Astro + Tailwind** with **CloudCannon** or other CMS—see **`dev-workflow.md`**. **Figma** is upstream for design handoff. **Never assume** Webflow until `project.md` confirms `stack: webflow`.
 
-The Webflow URL for each client is stored in their Notion project page (`Webflow URL` field).
+The Webflow URL for each client is stored in `project.md` frontmatter (`webflow_url` field).
+
+## Modes (clarify before work)
+
+| Mode | Meaning |
+|------|---------|
+| **Native Webflow Designer** | Pages and styles live in Webflow; publishing is Webflow-hosted. |
+| **Webflow CMS → headless** | Content is edited in Webflow; the **marketing site** is built in Astro (or similar) and pulls content at **build time** via API. |
+| **Webflow Code Components** | React (or similar) components deployed to a workspace library—see Webflow MCP skills for code-component workflows. |
+
+Do not assume which mode applies—read `project.md` and the task brief.
 
 ## Working with Webflow
 
 - Use `data_sites_tool → list_sites` to find a site by display name
 - Use `variable_tool → get_variable_collections / get_variables` to check brand tokens
 - Use `style_tool → get_styles` to review current typography and class styles
-- After creating or linking a Webflow site, update the client's Notion page with the `Webflow URL`
+- After creating or linking a Webflow site, update `project.md` frontmatter with the `webflow_url`
 
 ## Gotchas
 
-**Gotcha — Webflow is optional for app projects.**
-App projects (Custom Build tier) do not use Webflow. Only website projects (Landing Page, Full Website) use Webflow as the build tool.
+**Gotcha — Webflow is optional for websites too.**
+Confirm in `project.md` whether this engagement includes a Webflow site (Designer build and/or headless CMS). **Custom app** projects do not use Webflow.
 
 **Gotcha — Webflow CMS headless vs. native.**
 When a website project selects "Webflow CMS" as an integration, it means using Webflow as a headless CMS (content pulled via API into Astro). This is different from a native Webflow site build. Clarify which mode is in use before making CMS changes.

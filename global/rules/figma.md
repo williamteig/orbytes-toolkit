@@ -5,6 +5,8 @@ alwaysApply: false
 
 # Figma Rules
 
+For **file page layout**, **brand vs wireframe vs hi-fi**, **variables-before-components**, **section handoff**, and **design-stage deploy**, see **`figma-file-structure.md`**.
+
 ## URL Handling
 
 **Gotcha — strip query params from Figma URLs.**
@@ -27,4 +29,4 @@ URL pattern: `https://www.figma.com/design/{fileKey}/{fileName}`
 - Figma is the main source of truth when it comes to lightweight design mockups, design variables, and branding direction.
 - The design that is live should always be reflected in Figma.
 - Responsiveness and pixel-perfect accuracy is not the priority above getting the design right.
-- The Figma URL for each client is stored in their Notion project page (`Figma URL` field)
+- The Figma URL for each client is stored in `project.md` frontmatter (`figma_url` field)

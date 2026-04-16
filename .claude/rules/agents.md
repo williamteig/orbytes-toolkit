@@ -1,6 +1,6 @@
 ---
-description: Rules for creating new sub-agents in global/agents/. Apply when adding or modifying agent files.
-globs: global/agents/**
+description: Reference guide for creating sub-agents. Apply when designing or building new agent files.
+alwaysApply: false
 ---
 
 # Creating Sub-Agents

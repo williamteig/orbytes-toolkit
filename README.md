@@ -1,106 +1,107 @@
-# orbytes-claude-toolkit
+# orbytes-toolkit
 
-The standard Claude Code toolkit for all orbytes.io projects. Install once, update centrally, available everywhere.
+The standard AI toolkit for all orbytes.io projects. Install once, update centrally, available everywhere. Works with **Claude Code** and **Cursor** (multi-LLM).
 
 ## Install
 
+### Claude Code (default)
+
 ```bash
-cd ~/Documents/AppDev/orbytes-claude-toolkit
+cd ~/Documents/AppDev/orbytes-toolkit
 chmod +x install.sh
 ./install.sh
 ```
 
-Everything is **symlinked**, not copied. The toolkit stays in one place on your machine.
+Equivalent to `./install.sh --target claude`. Symlinks into **`~/.claude/`** only.
+
+### Cursor
+
+```bash
+./install.sh --target cursor
+```
+
+Symlinks commands, rules (as `.mdc`), and skills into **`~/.cursor/`**.
+
+### Both
+
+```bash
+./install.sh --target all
+```
+
+Everything installed is **symlinked**, not copied. The toolkit stays in one place.
 
 ## Update
 
 ```bash
-cd ~/Documents/AppDev/orbytes-claude-toolkit
+cd ~/Documents/AppDev/orbytes-toolkit
 git pull
 ```
 
-That's it. All commands, rules, and skills update across every project instantly because they're symlinks back to this repo.
+All symlinked files update across projects because they point back to this repo.
+
+## Uninstall
+
+```bash
+./uninstall.sh              # default: claude only
+./uninstall.sh --target cursor
+./uninstall.sh --target all
+```
 
 ## What's included
 
 ### Commands
 
-`/task` uses the argument to decide what to do: a number fetches and executes an existing task; any other text creates a new one.
-
 | Command | What it does |
 |---------|-------------|
-| `/task 13` | Reads task #13 from the Dev Pipeline, executes it, writes findings back to Notion, updates status |
-| `/task Fix the mobile nav` | Creates a new task in the Dev Pipeline with interactive prompts for project, type, priority |
-| `/new-orbytes-website` | Interactive onboarding → scaffolds an Astro + Tailwind project with orbytes defaults |
-| `/new-orbytes-app` | Interactive onboarding → scaffolds a custom app project (Next.js, SvelteKit, etc.) |
+| `/new-orbytes-website` | Interactive onboarding → scaffolds a website project (Astro, Framer, or Webflow) |
 
 ### Global layer (applies to all projects)
 
-- **CLAUDE.md** — orbytes identity, dev pipeline stages, approval gates, coding standards, git workflow
-- **orbytes-context-sync** skill — keeps Notion, Figma, and Webflow in sync across client projects
-- **orbytes-workflow-sync** skill — ensures the Notion Project Template and workflow docs stay matched
+- **CLAUDE.md** — orbytes identity, workflow, tools, coding standards
+- **Rules** — coding, git, workflow, pipeline, Figma, Framer, Astro, Tailwind, Webflow, CloudCannon, Cloudflare
+- **Skills** — orbytes-context-sync, orbytes-workflow-sync
+- **Agents** — project-manager, strategy, copy, design, developer, QA (component, section, page)
 
-### Website layer (Astro + Tailwind)
+### Website layer (copied into new projects)
 
-- Website-specific CLAUDE.md rules (Astro conventions, Tailwind standards, SEO, performance targets)
-- Starter templates: `package.json`, `astro.config.mjs`, `tsconfig.json`, `BaseLayout.astro`, `index.astro`
-
-### App layer (Custom Builds)
-
-- App-specific CLAUDE.md rules (architecture principles, security defaults, testing requirements)
-- Flexible — stack is chosen during `/new-orbytes-app` onboarding
+- Website-specific CLAUDE.md (stack-agnostic wrapper)
+- `stacks.md` — documents all three website stacks (Astro, Framer, Webflow)
+- Templates: `project.md` (client project tracker), `brand.md` (brand kit), Astro starter files
 
 ## How it works
 
 ```
-~/.claude/
-├── CLAUDE.md                      → symlink → toolkit/global/CLAUDE.md
-├── commands/
-│   ├── task.md                    → symlink → toolkit/commands/task.md
-│   ├── new-orbytes-website.md     → symlink → toolkit/commands/new-orbytes-website.md
-│   └── new-orbytes-app.md         → symlink → toolkit/commands/new-orbytes-app.md
-└── skills/
-    ├── orbytes-context-sync/      → symlink → toolkit/global/skills/orbytes-context-sync/
-    └── orbytes-workflow-sync/     → symlink → toolkit/global/skills/orbytes-workflow-sync/
-```
-The **global layer** (CLAUDE.md, skills, commands) lives in `~/.claude/` via symlinks and applies to every Claude Code session.
-
-When you scaffold a new project with `/new-orbytes-website` or `/new-orbytes-app`, the **type-specific layer** (website or app rules + templates) is copied into that project since it's project-specific and may be customised.
-
-## Per-project overrides
-
-After scaffolding, each project has its own `CLAUDE.md` in the project root. This contains the type-specific rules (website or app) and can be freely edited per project. It sits alongside the global `~/.claude/CLAUDE.md` — Claude reads both, with project-level rules taking priority.
-
-To override a global rule for one project, just add the override to the project's `CLAUDE.md`.
-
-## Uninstall
-
-```bash
-cd ~/Documents/AppDev/orbytes-claude-toolkit
-./uninstall.sh
+~/.claude/ (or ~/.cursor/)
+├── CLAUDE.md          → symlink → toolkit/global/CLAUDE.md
+├── commands/          → symlinks → toolkit/global/commands/*.md
+├── rules/             → symlinks → toolkit/global/rules/*.md
+├── skills/            → symlinks → toolkit/global/skills/*/
+├── agents/            → symlinks → toolkit/global/agents/*.md
+└── hooks/             → symlinks → toolkit/global/hooks/*.{sh,py}
 ```
 
-Removes all symlinks and restores any backed-up files.
+The **global layer** applies to every session. When you scaffold with `/new-orbytes-website`, the **website layer** is **copied** into that project and becomes project-local.
 
 ## Structure
 
 ```
-orbytes-claude-toolkit/
-├── install.sh                 # One-time setup
-├── uninstall.sh               # Clean removal
-├── README.md
-├── global/                    # Shared across ALL projects
-│   ├── CLAUDE.md             # Global rules (symlinked to ~/.claude/)
+orbytes-toolkit/
+├── CLAUDE.md              # Repo-level project instructions
+├── AGENTS.md              # Agent index
+├── install.sh / uninstall.sh
+├── global/                # Symlinked globally
+│   ├── CLAUDE.md
+│   ├── agents/
+│   ├── commands/
+│   ├── rules/
+│   ├── hooks/
 │   └── skills/
-│       ├── orbytes-context-sync/
-│       └── orbytes-workflow-sync/
-├── website/                   # Website project defaults
-│   ├── CLAUDE.md             # Copied into new website projects
-│   └── templates/            # Starter files for Astro + Tailwind
-├── app/                       # App project defaults
-│   └── CLAUDE.md             # Copied into new app projects
-└── commands/                  # Slash commands (symlinked to ~/.claude/commands/)
-    ├── task.md               # /task
-    ├── new-orbytes-website.md # /new-orbytes-website
-    └── new-orbytes-app.md     # /new-orbytes-app
+├── website/               # Copied into new website projects
+│   ├── CLAUDE.md
+│   ├── stacks.md
+│   └── templates/
+│       ├── project.md     # Client project template
+│       ├── brand.md       # Brand kit template
+│       └── astro/         # Astro starter files
+└── .cursor/               # Committed symlinks for Cursor parity
 ```

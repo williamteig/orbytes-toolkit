@@ -1,104 +1,76 @@
-# orbytes-claude-toolkit — Project Instructions
+# orbytes-toolkit — Project Instructions
 
-You are helping Will build and maintain the **orbytes-claude-toolkit**, a centralized Claude Code configuration repo that standardizes how Claude works across all orbytes.io client projects.
+You are helping Will build and maintain the **orbytes-toolkit**, a centralized configuration repo that standardizes how AI coding assistants work across all orbytes.io client projects — **Claude Code** and **Cursor** (multi-LLM).
 
 ## What this project is
 
-A GitHub repo (`williamteig/orbytes-claude-toolkit`) cloned at `/Users/williamteig/Documents/AppDev/orbytes-claude-toolkit`. It contains three layers of Claude Code configuration — global, website, and app — plus slash commands that scaffold new projects and manage the dev pipeline. Everything is symlinked into `~/.claude/` so updates to this repo propagate instantly to all projects.
+A GitHub repo (`williamteig/orbytes-toolkit`) cloned at `/Users/williamteig/Documents/AppDev/orbytes-toolkit`. It contains two layers of project configuration — global and website — plus a slash command that scaffolds new projects.
+
+- **`./install.sh`** (default `--target claude`) symlinks into **`~/.claude/`** so updates to this repo propagate instantly for Claude Code.
+- Use `./install.sh --target cursor` or `./install.sh --target all` to also symlink into **`~/.cursor/`** (commands, rules as `.mdc`, skills).
+- The committed **`.cursor/`** directory mirrors `global/` via symlinks so Cursor Cloud Agents and repo-local sessions load rules and commands in-repo.
 
 ## Architecture
 
 ```
-orbytes-claude-toolkit/
-├── global/                    # Applies to ALL orbytes projects via ~/.claude/ symlinks
-│   ├── CLAUDE.md             # Orbytes identity, tools, pointer to rules + skills
-│   ├── agents/               # Autonomous sub-agents spawned by commands/skills
-│   ├── commands/             # Slash commands (symlinked into ~/.claude/commands/)
-│   ├── rules/                # Topic-based rules (symlinked into ~/.claude/rules/)
-│   └── skills/               # Invocable skill modules (symlinked into ~/.claude/skills/)
-├── website/                   # Copied into website projects during scaffolding
-│   ├── CLAUDE.md             # Astro + Tailwind conventions, SEO, performance targets
-│   └── templates/            # Starter files (package.json, astro.config, layouts, etc.)
-├── app/                       # Copied into app projects during scaffolding
-│   └── CLAUDE.md             # Architecture principles, security defaults, flexible stack
-├── install.sh                 # Symlinks everything into ~/.claude/
-└── uninstall.sh               # Removes symlinks, restores backups
+orbytes-toolkit/
+├── CLAUDE.md                  # This file — repo-level project instructions
+├── README.md                  # Repo readme
+├── install.sh                 # --target claude | cursor | all
+├── uninstall.sh               # Removes symlinks
+├── .gitignore
+├── global/                    # Symlinked globally — applies to every session
+│   ├── CLAUDE.md              # Orbytes identity, tools, pointers to rules + skills
+│   ├── commands/              # Slash commands (/new-orbytes-website)
+│   ├── rules/                 # Topic-based rules
+│   ├── hooks/                 # Claude Code hook scripts
+│   └── skills/                # Invocable skill modules
+├── website/                   # Copied into new website projects during scaffolding
+│   ├── CLAUDE.md              # Website project conventions (stack-agnostic wrapper)
+│   ├── stacks.md              # Documents all website-tier stacks
+│   └── templates/
+│       ├── project.md         # Client project.md template (Obsidian)
+│       ├── brand.md           # Brand kit template
+│       ├── astro/             # Astro + Tailwind starter files
+│       └── framer/            # Framer project starter files (TODO)
+└── .cursor/                   # Committed symlinks for Cursor parity
 ```
 
 ## How it works
 
-- **Global layer** lives in `~/.claude/` via symlinks. It applies to every Claude Code session automatically. Updating a file here updates it everywhere.
-- **Type-specific layers** (website/app) are copied into each project during scaffolding via the `/new-orbytes-website` or `/new-orbytes-app` commands. These become project-local and can be customized per client.
-- **Commands** are prompt templates injected when a user types a slash command. They receive `$ARGUMENTS` and run inline in the conversation.
-- **Skills** are invocable modules with frontmatter metadata (`description`, `user-invocable`). Claude can trigger them automatically based on context, or the user can invoke them directly.
-- **Agents** are autonomous sub-processes spawned by commands or skills to handle complex, multi-step workflows independently. Unlike skills (which run inline), agents run in parallel, make their own judgement calls, and return a structured report. They live in `global/agents/` and are spawned via the `Agent` tool.
-
-## The /task command
-
-`/task` interfaces with the orbytes Dev Pipeline in Notion.
-
-- **Dev Pipeline Database ID:** `599e132701274298b902d85a529ebde5`
-- **Data Source:** `collection://277efdcf-8436-4503-84a6-20f3e9428ef7`
-- **Schema:** Task (title), Status (Not started / In progress / Done), Type (Feature / Bug / Chore / Research / Docs), Priority (Critical / High / Medium / Low), Client Belonging (relation → Orbytes Clients), Blocked by / Blocking (self-referencing relations), Due, Estimate (pts), Branch, Phase, Notes, ID (auto-increment), Github link (rollup — UI only, not used by the command)
-
-Two modes:
-1. `/task [number]` — Fetch the task by ID, check dependencies (Blocked by), resolve the correct repo via Client Belonging → Github URL, create a worktree branch (`dev-{ID}-{short-description}`), execute the work, write findings back to Notion, update status, and notify about unblocked tasks.
-2. `/task [description]` — Create a new task. Ask clarifying questions (project, type, priority), create the page in Notion, present it for approval.
-
-## The scaffolding commands
-
-`/new-orbytes-website` and `/new-orbytes-app` both follow the same pattern:
-1. Ask interactive onboarding questions (client name, stack choices, integrations)
-2. Create project directory
-3. Copy global CLAUDE.md + skills into the project
-4. Copy type-specific CLAUDE.md and templates
-5. Apply customizations based on answers
-6. Install dependencies, verify build, init git
-7. Create an initial task in the Dev Pipeline
-
-Website defaults to Astro + Tailwind. App stack is chosen during onboarding (Next.js, SvelteKit, React Native, etc.).
+- **Global layer** lives in `~/.claude/` (and optionally `~/.cursor/`) via symlinks. Applies to every session. Editing files under `global/` updates everything once symlinked.
+- **Website layer** is copied into each project during scaffolding via `/new-orbytes-website`. Becomes project-local and can be customized per client.
+- **Commands** are prompt templates invoked via slash commands. They receive `$ARGUMENTS` and run inline.
+- **Skills** are invocable modules with frontmatter. Claude/Cursor can trigger them based on context, or the user invokes them directly.
 
 ## orbytes context
 
-- **orbytes.io** is a digital product studio run by Will Teig (william@orbytes.io)
-- **Service tiers:** Landing Page (fixed), Full Website (fixed), Custom Build (enterprise)
-- **Tools:** Notion (source of truth), Figma (design), Webflow (website builds), Relume (components), Claude (copy + code), Softriver (whitelabel branding)
-- **Pipeline:** Client Summary → Stage X Branding (optional) → Stage 1 Research → Stage 2 Content (Approval Gate 1) → Stage 3 Design (Approval Gate 2) → Stage 4 Development (Approval Gate 3) → Stage 5 Launch
-- **Key rules:** Three approval gates only. Notion is always truth. Figma is lightweight. Branding is always whitelabeled. Never skip stages.
+- **orbytes.io** is a boutique web design studio run by Will Teig (william@orbytes.io)
+- **Service tiers:** Landing Page (fixed price), Full Website (fixed price), Custom Build (enterprise)
+- **Website stacks:** Framer (primary for new work), Astro + CloudCannon (code-heavy projects), Webflow (legacy/selective)
+- **Tools:** Obsidian (project management via markdown), GitHub (version control), Cloudflare/Vercel (deploy), Softriver (whitelabel branding partner)
+- **Design tools (on request, not foundational):** Figma, Paper.design — used for mockups and graphics when needed, not required for every project
+- **Pipeline:** Stage X Branding (optional) → Stage 1 Research → Stage 2 Content (Gate 1) → Stage 3 Design (Gate 2) → Stage 4 Development (Gate 3) → Stage 5 Launch
+- **Key rules:** Three approval gates only. `project.md` is always the source of truth. Branding is always whitelabeled. Never skip stages.
 
-## What still needs building
+## The /new-orbytes-website command
 
-This toolkit is a living project. Areas to expand:
-
-- **More global skills** — e.g., a `/deploy` command, a `/review` command for code review standards
-- **Website templates** — more complete Astro starter (components, styles, content collections)
-- **App templates** — framework-specific starters for Next.js, SvelteKit, etc.
-- **MCP configuration** — standard `mcp-servers.json` for Notion, Figma, Webflow connections
-- **Hooks** — auto-context loading on session start, pattern extraction
-- **More rules** — framework-specific gotchas for Astro, Next.js, Supabase, etc. in `website/rules/` and `app/rules/`
-- **Testing** — verify commands work end-to-end in fresh Claude Code sessions
+Scaffolds a new website project:
+1. **Qualify** — Walk through client readiness checklist
+2. **Scaffold** — Create project directory, Obsidian vault, project.md, brand.md, stack-specific files, git repo
+3. **Discovery** — Process questionnaire responses (if available, otherwise run later)
 
 ## How to work on this project
 
-- Edit files directly in the repo at `/Users/williamteig/Documents/AppDev/orbytes-claude-toolkit`
-- Changes to `global/` (CLAUDE.md, commands/, skills/, rules/) take effect immediately everywhere (they're symlinked)
-- Changes to `website/` and `app/` only affect newly scaffolded projects
-- Commit and push to keep the GitHub remote in sync
-- The install script is idempotent — safe to re-run after adding new commands or skills
+- Edit files directly in `/Users/williamteig/Documents/AppDev/orbytes-toolkit`
+- Changes to `global/` take effect immediately everywhere symlinked
+- Changes to `website/` only affect newly scaffolded projects
+- The install script is idempotent — safe to re-run after adding new files
 
 ## Gotchas
 
-**Gotcha — adding a new category requires updating both scripts.**
-`install.sh` and `uninstall.sh` only handle the categories they know about (commands, rules, skills). If you add a new top-level category (e.g. `global/hooks/`), you must add the corresponding symlink loop to both scripts, otherwise the new files will never be wired up.
-
-**Gotcha — empty directories are invisible to git.**
-Git does not track empty folders. If you create a new directory (e.g. `website/rules/`) without putting a file in it, it won't be committed and will silently disappear after a fresh clone. Add a real file before committing.
-
-**Gotcha — things placed at the wrong layer won't propagate correctly.**
-`global/` is symlinked and applies everywhere. `website/` and `app/` are copied at scaffold time and only affect new projects. A rule or skill placed in `website/` instead of `global/` will never reach app projects, and vice versa. When adding something new, confirm the right scope before placing it.
-
-**Gotcha — agents need to be added to install.sh/uninstall.sh.**
-Like commands, rules, and skills, agents live under `global/agents/` and must be symlinked by the install script. Adding a new agent without updating both scripts means it won't be available outside this repo.
-
-**Gotcha — macOS Finder can create stray folders with spaces.**
-Directories with spaces in their names (e.g. `Orbytes Claude Toolkit/`) can appear from accidental Finder interactions. They break shell glob patterns in the install script. Check `ls` before committing and delete any unexpected directories.
+- **Adding a new category** (e.g. `global/templates/`) requires updating both `install.sh` and `uninstall.sh`.
+- **Cursor parity**: when adding a new global rule/command/skill, add the matching symlink under `.cursor/` too.
+- **Empty directories** are invisible to git — always put a file in new directories.
+- **Wrong layer**: `global/` is symlinked everywhere; `website/` is copied at scaffold time. Place files at the right scope.
+- **macOS Finder** can create stray folders with spaces — check before committing.
