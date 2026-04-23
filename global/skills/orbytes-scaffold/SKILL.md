@@ -10,13 +10,12 @@ For any decisions not yet made, ask one at a time:
 1. **Client name** — used for directory naming and config
 2. **Stack choice:**
    - **Framer** — primary stack. Visual builder + built-in CMS.
-   - **Astro + CloudCannon CMS** — for complex/custom builds needing full codebase + Git-based CMS
+   - **Astro + CloudCannon** — for code-heavy builds needing full codebase + Git-based CMS. Scaffolded from `CloudCannon/astro-component-starter` (official starter, three-file component pattern) with CloudCannon agent-skills installed per-project.
 3. **Service tier** — Landing Page (single page, fixed price) or Full Website (multi-page with CMS, fixed price)
 4. **Branding** — Outsourced to Softriver (default) / Client providing / Brand already exists / No branding needed
 5. **Figma file URL** *(optional)* — paste URL or "not yet" (Figma is used on-request for mockups, not foundational)
 6. **Framer project URL** *(Framer only)* — paste URL or "not yet"
-7. **Deployment target** *(Astro only)* — Vercel (recommended) / Cloudflare Pages / Netlify
-8. **Additional integrations** *(Astro only)* — CloudCannon CMS, Blog, Contact form, Analytics, None
+7. **CloudCannon hosting mode** *(Astro only)* — CloudCannon-built (default — visual preview in the editor) / Headless + Cloudflare Pages (when the client prioritises an existing Cloudflare deploy pipeline over visual preview)
 
 Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
@@ -35,82 +34,192 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
 3. **Create `changelog/`** directory with an initial entry `changelog/YYYY-MM-DD-initial-scaffold.md` documenting the scaffold (use today's date).
 
-4. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
+4. **Create knowledge base directories:**
+   ```
+   raw/
+   ├── comms/          # Slack exports, emails, voice note transcripts
+   ├── docs/           # Brand guides, word docs, PDFs
+   └── feedback/       # Revision requests, review notes
+   knowledge/
+   ├── index.md        # Knowledge index (seeded from template below)
+   └── entries/        # Individual processed entries
+   discovery/
+   ├── current-site/   # Mirror of client's existing site + notes.md with their walkthrough
+   │   └── .gitkeep
+   └── inspirational-material/
+       ├── index.md
+       └── raw/
+   ```
+
+   Seed `knowledge/index.md` with:
+   ```markdown
+   ---
+   title: Knowledge Index
+   updated: {{DATE}}
+   total_entries: 0
+   ---
+
+   # Knowledge Index
+
+   All ingested client knowledge for this project, newest first.
+
+   ## Recent Entries
+
+   (no entries yet — run `/orbytes-ingest` to process client input)
+
+   ## By Type
+
+   ### Comms
+
+   ### Docs
+
+   ### Feedback
+
+   ## Unresolved Contradictions
+
+   (none)
+
+   ## Unresolved Questions
+
+   (none)
+   ```
+
+   If directories already exist (migrating an existing project), skip creation.
+
+5. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
    - Replace all `{{PLACEHOLDERS}}` with gathered values
    - Set `stage: x-branding` if branding is outsourced, otherwise `1-research`
    - Set `stack:` to the chosen stack
    - Set `figma_url:`, `framer_url:` as applicable
    - Remove the branding stage section if "No branding needed"
 
-5. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
+6. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
    - Replace `{{CLIENT_NAME}}` and `{{BRANDING_SOURCE}}`
    - Set `{{DATE}}` to today's date
 
-6. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
+7. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
 
 ## Framer stack
 
-7. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
+8. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
    - `CLAUDE.md` — replace `{{PROJECT_NAME}}` with the repo name
    - `.gitignore`
    - `README.md` — replace `{{CLIENT_NAME}}`, `{{FRAMER_URL}}`, `{{LIVE_URL}}`
 
-8. **Create directory structure:**
+9. **Create directory structure:**
    ```
    src/
    ├── scripts/        # Custom JS for CDN delivery (if needed)
    └── styles/         # Custom CSS for CDN delivery (if needed)
    ```
 
-## Astro stack
+## Astro + CloudCannon stack
 
-7. **Copy `CLAUDE.md`** — Merge `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a single project `CLAUDE.md`. Fill in the "Record for this project" section with the chosen stack/CMS/deploy.
+> **Important:** Do not run the generic "core setup" steps 1-7 in the project directory before this. The Astro scaffold creates the project directory itself via `npx create-astro-component-starter`. The vault overlay in step 10 below replaces the Obsidian/knowledge/raw/changelog setup from core step 2-4.
 
-8. **Copy Astro templates** from `$ORBYTES_TOOLKIT_PATH/website/templates/astro/`:
-   - `package.json` (replace `{{PROJECT_NAME}}`)
-   - `astro.config.mjs`
-   - `tsconfig.json`
-   - `src/layouts/BaseLayout.astro`
-   - `src/pages/index.astro`
-
-9. **Create directory structure:**
+8. **Scaffold via the Component Starter** (CloudCannon's official, April 2026 canonical):
+   ```bash
+   cd /Users/williamteig/Documents/AppDev
+   npx create-astro-component-starter <project-name> --yes
    ```
-   src/
-   ├── components/
-   │   ├── ui/
-   │   ├── sections/
-   │   └── layout/
-   ├── layouts/
-   ├── pages/
-   ├── content/
-   ├── styles/
-   ├── assets/
-   └── lib/
+   This:
+   - Clones `CloudCannon/astro-component-starter`
+   - Installs npm dependencies
+   - Configures a git `upstream` remote pointing at the template (for future template pulls)
+   - Leaves the template's commit history on `main` — orbytes overlay commits on top of it
+
+   The starter ships with:
+   - 40+ components across `src/components/building-blocks/`, `page-sections/`, `navigation/`
+   - Three-file component pattern: `Component.astro` + `component.cloudcannon.inputs.yml` + `component.cloudcannon.structure-value.yml`
+   - `cloudcannon.config.yml` pre-populated
+   - Content collections for pages and blog (`src/content/`)
+   - Design tokens in `src/styles/variables/` (colours, fonts, spacing, widths) + themes in `src/styles/themes/`
+   - Component docs at `/component-docs/` (dev-only visual component builder)
+   - Fonts pipeline via `site-fonts.mjs`
+   - `.prettierrc`, `.stylelintrc.json`, ESLint config
+
+   **Do not rebuild these** — apply client brand and content in place.
+
+9. **Install CloudCannon agent-skills** (per-project — not global):
+   ```bash
+   cd <project-name>
+   npx -y skills add CloudCannon/agent-skills -y
    ```
+   Installs 5 skills into `.agents/skills/` and symlinks them into `.claude/skills/` and `.windsurf/skills/`.
 
-10. **Apply integrations** based on answers:
-    - CloudCannon → add `cloudcannon.config.yml` placeholder
-    - Blog → create `src/content/config.ts` with blog collection
-    - Contact form → create `src/components/sections/ContactForm.astro` placeholder
-    - Analytics → add snippet to `BaseLayout.astro`
+   Immediately remove `brainstorming` — orbytes has better coverage via `shape`, `critique`, `impeccable`:
+   ```bash
+   rm -rf .agents/skills/brainstorming .claude/skills/brainstorming .windsurf/skills/brainstorming
+   ```
+   Then edit `skills-lock.json` and remove the `brainstorming` entry from the `skills` object so `skills update` doesn't reinstall it.
 
-11. **Create supporting files:** `.prettierrc`, `README.md`, `.env.example`
+10. **Overlay orbytes vault** on top of the Starter (do NOT replace the Starter's `src/`):
+    - Create `.obsidian/` with:
+      - `app.json` → `{"showFrontmatter": true, "defaultViewMode": "preview"}`
+      - `appearance.json` → `{"baseFontSize": 16, "theme": "obsidian"}`
+      - `core-plugins.json` → `["file-explorer", "search", "tag-pane", "page-preview", "templates"]`
+    - Generate `project.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/project.md` (placeholders filled)
+    - Generate `brand.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md` (placeholders filled)
+    - Create `knowledge/index.md` (seeded from the snippet in core step 4) + `knowledge/entries/.gitkeep`
+    - Create `raw/comms/.gitkeep`, `raw/docs/.gitkeep`, `raw/feedback/.gitkeep`
+    - Create `discovery/current-site/.gitkeep`, `discovery/inspirational-material/index.md`, `discovery/inspirational-material/raw/.gitkeep`
+    - Create `changelog/YYYY-MM-DD-initial-scaffold.md`
+    - Append to the Starter's `.gitignore`:
+      ```
+      # Obsidian workspace state (user-specific, not project config)
+      .obsidian/workspace*.json
+      .obsidian/cache
+      .obsidian/graph.json
+      ```
 
-12. **Install and verify:** `npm install && npm run build`
+11. **Merge `CLAUDE.md`** — combine `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a project `CLAUDE.md`. Fill in the "Record for this project" section with stack=astro, CMS=cloudcannon, hosting=(chosen mode from step 7).
+
+12. **Save qualification summary** if present (as per core setup step 7).
+
+13. **Run `npm audit fix`** to clean up non-breaking vulnerabilities from transitive deps. Do NOT use `--force`. Record the residual count in the initial-scaffold changelog entry.
+
+14. **Apply client brand tokens** to `src/styles/variables/` (colours, typography, spacing) from `brand.md`. If the brand uses custom fonts, update `site-fonts.mjs`.
+
+15. **Verify build:**
+    ```bash
+    npm run build
+    ```
+    Starter demo content will still build — content migration happens after the initial commit.
 
 ## Initialize and create GitHub repo
 
-1. Initialize git: `git init && git add -A && git commit -m "Initial scaffold via orbytes-toolkit"`
-2. Create private GitHub repo:
+**Framer stack:** git hasn't been initialised yet — run:
+```bash
+git init && git add -A && git commit -m "Initial scaffold via orbytes-toolkit"
+```
+
+**Astro stack:** git is already initialised by `create-astro-component-starter` (with the template's upstream history). Commit the orbytes overlay as a second commit on top:
+```bash
+git add -A && git commit -m "chore: overlay orbytes vault and install CloudCannon agent-skills"
+```
+
+Then (both stacks):
+
+1. Create private GitHub repo and push:
    ```bash
    gh repo create williamteig/<project-name> --private --source=. --push
    ```
-3. Update `project.md` frontmatter with `github_url`
-4. Print summary: file tree, project links, and next steps
-5. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)"
+   **Gotcha (Astro stack):** the Component Starter ships with `.github/workflows/test.yml`, which requires the `workflow` OAuth scope. If push fails with "refusing to allow an OAuth App to create or update workflow ... without `workflow` scope", have the user run:
+   ```bash
+   gh auth refresh -h github.com -s workflow
+   ```
+   then retry the push.
+
+2. Update `project.md` frontmatter with `github_url`.
+3. Print summary: file tree, project links, and next steps.
+4. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)".
+5. Mention: "Use `/orbytes-ingest` to process client input as it arrives. Use `/orbytes-query` to search the knowledge base."
 
 ## Toolkit source
 
-Template files are in the orbytes-toolkit repository. The install script sets `ORBYTES_TOOLKIT_PATH` pointing to the repo location. Read templates from `$ORBYTES_TOOLKIT_PATH/website/templates/` and global files from `$ORBYTES_TOOLKIT_PATH/global/`.
+- `project.md`, `brand.md` templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/`
+- Global rules live at `$ORBYTES_TOOLKIT_PATH/global/`
+- **Framer stack** templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`
+- **Astro stack** has no local template — the canonical source is `CloudCannon/astro-component-starter`, fetched at scaffold time via `npx create-astro-component-starter`. This keeps the orbytes Astro stack continuously up-to-date with CloudCannon's latest componentry without maintaining a fork.
 
 If `ORBYTES_TOOLKIT_PATH` is not set, check `/Users/williamteig/Documents/AppDev/orbytes-toolkit`.
