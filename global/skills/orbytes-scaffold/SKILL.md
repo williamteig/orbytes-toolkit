@@ -215,6 +215,14 @@ Then (both stacks):
 4. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)".
 5. Mention: "Use `/orbytes-ingest` to process client input as it arrives. Use `/orbytes-query` to search the knowledge base."
 
+## CloudCannon site connection (Astro stack only)
+
+**Do this AFTER the first push.** CloudCannon's dashboard setup requires a branch to already exist in the GitHub repo — it cannot create a site against an unpushed repo. Don't reverse the order.
+
+1. Confirm the repo was pushed successfully (the user sees it at `https://github.com/williamteig/<project-name>`).
+2. Prompt the user to create the site in the CloudCannon dashboard (`app.cloudcannon.com`), pointing at the `main` branch (or `staging` if the project uses a branch-preview workflow — see `cloudcannon.md`).
+3. Once the site is connected, update `project.md` frontmatter with the CloudCannon site URL and record the branch it tracks.
+
 ## Toolkit source
 
 - `project.md`, `brand.md` templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/`
