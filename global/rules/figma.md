@@ -26,7 +26,9 @@ URL pattern: `https://www.figma.com/design/{fileKey}/{fileName}`
 
 ## Design Philosophy
 
-- Figma is the main source of truth when it comes to lightweight design mockups, design variables, and branding direction.
-- The design that is live should always be reflected in Figma.
-- Responsiveness and pixel-perfect accuracy is not the priority above getting the design right.
-- The Figma URL for each client is stored in `project.md` frontmatter (`figma_url` field)
+- Figma is **optional** and **on-request** — use it for low-fidelity mockups, early visual exploration, or branding moodboards when that aids communication with the client or designer.
+- **Figma is not a source of truth.** The shipped, rendered site is canonical. Brand tokens live in `brand.md`. Copy and strategy live in the project vault. Do not treat a Figma file as authoritative for content, layout, or live design state.
+- Do not attempt to keep Figma in sync with production. The live site wins, always.
+- When migrating an existing site (e.g. Webflow → Astro), never use Figma as the source for content or layout. Capture the rendered browser DOM per `orbytes-discovery` Step 1b and work from that.
+- Pixel-perfect accuracy is not the priority above getting the design right.
+- If a Figma file exists for a project, its URL lives in `project.md` frontmatter (`figma_url` field).

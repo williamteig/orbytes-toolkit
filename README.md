@@ -54,11 +54,12 @@ All symlinked files update across projects because they point back to this repo.
 | Command | What it does |
 |---------|-------------|
 | `/new-orbytes-website` | Interactive onboarding → scaffolds a website project (Astro, Framer, or Webflow) |
+| `/orbytes-seo` | Opt-in SEO workflow (post-build by default, runs only when explicitly requested) |
 
 ### Global layer (applies to all projects)
 
 - **CLAUDE.md** — orbytes identity, workflow, tools, coding standards
-- **Rules** — coding, git, workflow, pipeline, Figma, Framer, Astro, Tailwind, Webflow, CloudCannon, Cloudflare
+- **Rules** — coding, git, workflow, pipeline, SEO, Figma, Framer, Astro, Tailwind, Webflow, CloudCannon, Cloudflare
 - **Skills** — orbytes-context-sync, orbytes-workflow-sync
 - **Agents** — project-manager, strategy, copy, design, developer, QA (component, section, page)
 

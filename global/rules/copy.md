@@ -27,6 +27,18 @@ Create `voice.md` in the project root. This defines:
 
 **Source:** Client input — ask for tone references, writing styles they admire, phrases they use, language they hate. This is collaborative, not prescriptive.
 
+## Step 1b: Perspective Testing
+
+After discovery answers are in and before writing copy, stress-test the positioning by running the brief through three hostile lenses. Save the output in `discovery/perspective-test.md`:
+
+1. **The Skeptical Customer** — *"You are a potential customer visiting this website for the first time. You're busy, you've seen a hundred sites like this, and you're looking for a reason to leave. What would make you bounce? What's missing? What feels generic?"*
+2. **The Competitor** — *"You are a direct competitor analysing this positioning. Where is the weakness? What claim could you undercut? What's the real differentiator — or is there none?"*
+3. **The Confused Outsider** — *"You are a first-time visitor who knows nothing about this industry. Read this positioning. What's confusing? What jargon makes no sense? What would you click — and what would you skip?"*
+
+Run all three through the LLM. Then synthesise: what surfaced that you hadn't considered? Update `brief.md` and `voice.md` with anything that changed your thinking.
+
+**This is not optional.** Perspective testing catches blind spots that no amount of internal brainstorming will find. It takes 10 minutes and saves weeks of revision.
+
 ## Step 2: Page Strategy
 
 For each page, define the strategy BEFORE writing a single word. Save in the page's content file (`content/<page>.md`):

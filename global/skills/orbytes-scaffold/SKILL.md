@@ -23,7 +23,24 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
 1. **Create the project directory** using the client name (kebab-case)
 
-2. **Create Obsidian vault** — add a `.obsidian/` folder with these defaults:
+2. **Set up Cursor IDE config** — copy the template from `$ORBYTES_TOOLKIT_PATH/website/templates/cursor/` into `.cursor/`:
+   ```
+   .cursor/
+   ├── hooks.json                        # afterFileEdit hook config
+   ├── hooks/
+   │   └── post_claude_edit.sh           # mirrors CLAUDE.md → rules/project-context.mdc
+   ├── mcp.json                          # empty — add project MCPs here if needed
+   ├── rules/
+   │   ├── project-context.mdc           # auto-mirror of CLAUDE.md (populated in step 7/11)
+   │   └── memory-bridge.mdc             # pointer to Claude Code memory
+   └── settings.json                     # enables notion + figma plugins
+   ```
+   Make `post_claude_edit.sh` executable:
+   ```bash
+   chmod +x .cursor/hooks/post_claude_edit.sh
+   ```
+
+3. **Create Obsidian vault** — add a `.obsidian/` folder with these defaults:
    ```
    .obsidian/
    ├── app.json          # {"showFrontmatter": true, "defaultViewMode": "preview"}
@@ -32,9 +49,9 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    ```
    This makes the project directory openable as an Obsidian vault.
 
-3. **Create `changelog/`** directory with an initial entry `changelog/YYYY-MM-DD-initial-scaffold.md` documenting the scaffold (use today's date).
+4. **Create `changelog/`** directory with an initial entry `changelog/YYYY-MM-DD-initial-scaffold.md` documenting the scaffold (use today's date).
 
-4. **Create knowledge base directories:**
+5. **Create knowledge base directories:**
    ```
    raw/
    ├── comms/          # Slack exports, emails, voice note transcripts
@@ -86,38 +103,43 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
    If directories already exist (migrating an existing project), skip creation.
 
-5. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
+6. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
    - Replace all `{{PLACEHOLDERS}}` with gathered values
    - Set `stage: x-branding` if branding is outsourced, otherwise `1-research`
    - Set `stack:` to the chosen stack
    - Set `figma_url:`, `framer_url:` as applicable
    - Remove the branding stage section if "No branding needed"
 
-6. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
+7. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
    - Replace `{{CLIENT_NAME}}` and `{{BRANDING_SOURCE}}`
    - Set `{{DATE}}` to today's date
 
-7. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
+8. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
 
 ## Framer stack
 
-8. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
+9. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
    - `CLAUDE.md` — replace `{{PROJECT_NAME}}` with the repo name
    - `.gitignore`
    - `README.md` — replace `{{CLIENT_NAME}}`, `{{FRAMER_URL}}`, `{{LIVE_URL}}`
 
-9. **Create directory structure:**
-   ```
-   src/
-   ├── scripts/        # Custom JS for CDN delivery (if needed)
-   └── styles/         # Custom CSS for CDN delivery (if needed)
-   ```
+10. **Create directory structure:**
+    ```
+    src/
+    ├── scripts/        # Custom JS for CDN delivery (if needed)
+    └── styles/         # Custom CSS for CDN delivery (if needed)
+    ```
+
+11. **Populate `.cursor/rules/project-context.mdc`** from the project's `CLAUDE.md` (now that CLAUDE.md exists):
+    ```bash
+    { echo "---"; echo "description: Auto-mirror of this project's CLAUDE.md. Do not hand-edit."; echo "alwaysApply: true"; echo "---"; echo; cat CLAUDE.md; } > .cursor/rules/project-context.mdc
+    ```
 
 ## Astro + CloudCannon stack
 
-> **Important:** Do not run the generic "core setup" steps 1-7 in the project directory before this. The Astro scaffold creates the project directory itself via `npx create-astro-component-starter`. The vault overlay in step 10 below replaces the Obsidian/knowledge/raw/changelog setup from core step 2-4.
+> **Important:** Do not run the generic "core setup" steps 1-8 in the project directory before this. The Astro scaffold creates the project directory itself via `npx create-astro-component-starter`. The vault overlay in step 11 below replaces the Obsidian/knowledge/raw/changelog setup from core steps 3-5.
 
-8. **Scaffold via the Component Starter** (CloudCannon's official, April 2026 canonical):
+9. **Scaffold via the Component Starter** (CloudCannon's official, April 2026 canonical):
    ```bash
    cd /Users/williamteig/Documents/AppDev
    npx create-astro-component-starter <project-name> --yes
@@ -140,30 +162,37 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
    **Do not rebuild these** — apply client brand and content in place.
 
-9. **Install CloudCannon agent-skills** (per-project — not global):
-   ```bash
-   cd <project-name>
-   npx -y skills add CloudCannon/agent-skills -y
-   ```
-   Installs 5 skills into `.agents/skills/` and symlinks them into `.claude/skills/` and `.windsurf/skills/`.
+10. **Install CloudCannon agent-skills** (per-project — not global):
+    ```bash
+    cd <project-name>
+    npx -y skills add CloudCannon/agent-skills -y
+    ```
+    Installs 5 skills into `.agents/skills/` and symlinks them into `.claude/skills/` and `.windsurf/skills/`.
 
-   Immediately remove `brainstorming` — orbytes has better coverage via `shape`, `critique`, `impeccable`:
-   ```bash
-   rm -rf .agents/skills/brainstorming .claude/skills/brainstorming .windsurf/skills/brainstorming
-   ```
-   Then edit `skills-lock.json` and remove the `brainstorming` entry from the `skills` object so `skills update` doesn't reinstall it.
+    Also symlink into `.cursor/skills/` (not done by the CloudCannon installer):
+    ```bash
+    mkdir -p .cursor/skills
+    for d in .agents/skills/*/; do ln -s "../../$d" ".cursor/skills/$(basename $d)"; done
+    ```
 
-10. **Overlay orbytes vault** on top of the Starter (do NOT replace the Starter's `src/`):
+    Immediately remove `brainstorming` — orbytes has better coverage via `shape`, `critique`, `impeccable`:
+    ```bash
+    rm -rf .agents/skills/brainstorming .claude/skills/brainstorming .windsurf/skills/brainstorming .cursor/skills/brainstorming
+    ```
+    Then edit `skills-lock.json` and remove the `brainstorming` entry from the `skills` object so `skills update` doesn't reinstall it.
+
+11. **Overlay orbytes vault** on top of the Starter (do NOT replace the Starter's `src/`):
     - Create `.obsidian/` with:
       - `app.json` → `{"showFrontmatter": true, "defaultViewMode": "preview"}`
       - `appearance.json` → `{"baseFontSize": 16, "theme": "obsidian"}`
       - `core-plugins.json` → `["file-explorer", "search", "tag-pane", "page-preview", "templates"]`
     - Generate `project.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/project.md` (placeholders filled)
     - Generate `brand.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md` (placeholders filled)
-    - Create `knowledge/index.md` (seeded from the snippet in core step 4) + `knowledge/entries/.gitkeep`
+    - Create `knowledge/index.md` (seeded from the snippet in core step 5) + `knowledge/entries/.gitkeep`
     - Create `raw/comms/.gitkeep`, `raw/docs/.gitkeep`, `raw/feedback/.gitkeep`
     - Create `discovery/current-site/.gitkeep`, `discovery/inspirational-material/index.md`, `discovery/inspirational-material/raw/.gitkeep`
     - Create `changelog/YYYY-MM-DD-initial-scaffold.md`
+    - Copy `.cursor/` template from `$ORBYTES_TOOLKIT_PATH/website/templates/cursor/` (same as core step 2), then also symlink the `.agents/skills/` into `.cursor/skills/` (done in step 10)
     - Append to the Starter's `.gitignore`:
       ```
       # Obsidian workspace state (user-specific, not project config)
@@ -172,9 +201,10 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
       .obsidian/graph.json
       ```
 
-11. **Merge `CLAUDE.md`** — combine `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a project `CLAUDE.md`. Fill in the "Record for this project" section with stack=astro, CMS=cloudcannon, hosting=(chosen mode from step 7).
-
-12. **Save qualification summary** if present (as per core setup step 7).
+12. **Merge `CLAUDE.md`** — combine `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a project `CLAUDE.md`. Fill in the "Record for this project" section with stack=astro, CMS=cloudcannon, hosting=(chosen mode from step 7). Then populate `.cursor/rules/project-context.mdc`:
+    ```bash
+    { echo "---"; echo "description: Auto-mirror of this project's CLAUDE.md. Do not hand-edit."; echo "alwaysApply: true"; echo "---"; echo; cat CLAUDE.md; } > .cursor/rules/project-context.mdc
+    ```
 
 13. **Run `npm audit fix`** to clean up non-breaking vulnerabilities from transitive deps. Do NOT use `--force`. Record the residual count in the initial-scaffold changelog entry.
 
@@ -214,6 +244,14 @@ Then (both stacks):
 3. Print summary: file tree, project links, and next steps.
 4. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)".
 5. Mention: "Use `/orbytes-ingest` to process client input as it arrives. Use `/orbytes-query` to search the knowledge base."
+
+## Bridge 2nd Brain context (final step, all stacks)
+
+Once the repo is pushed and `project.md` is up to date, **invoke `orbytes-context-bridge`** to pull relevant context from Williams 2nd Brain into this project. This is mandatory — every new project gets a `context-bridge.md` before development begins, so the next session starts with the right context loaded.
+
+The bridge skill runs its own questionnaire (Phase 1) — ask Will what he already knows that's relevant, then search the 2nd Brain (Phase 2), then write `context-bridge.md` to the project root (Phase 3).
+
+If Will explicitly says "skip the bridge for now" — write a stub `context-bridge.md` with `status: pending-input` so the file exists and the first-session protocol doesn't re-prompt next time, but the work is flagged as not done.
 
 ## CloudCannon site connection (Astro stack only)
 

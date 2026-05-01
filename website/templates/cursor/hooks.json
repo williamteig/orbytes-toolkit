@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/post_claude_edit.sh",
+        "timeout": 60
+      }
+    ]
+  }
+}

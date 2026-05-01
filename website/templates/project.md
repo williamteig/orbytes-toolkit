@@ -27,7 +27,8 @@ live_url: ""
   - [ ] Brand kit saved to `brand.md`
 - [ ] **1. Research & Discovery** ← CURRENT
   - [ ] Asset documentation
-  - [ ] Client discovery (18 questions)
+  - [ ] Client discovery (19 questions)
+  - [ ] Current site captured (mirror + annotated notes.md) — skip if client has no existing site
   - [ ] Competitor audit
   - [ ] Site map draft
 - [ ] **2. Content Writeup**

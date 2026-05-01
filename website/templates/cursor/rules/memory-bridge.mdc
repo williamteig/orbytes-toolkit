@@ -1,0 +1,38 @@
+---
+description: Bridge to Claude Code's auto-memory — where to find it, when to read it.
+alwaysApply: true
+---
+
+# Memory Bridge
+
+Claude Code stores per-project auto-memory at:
+
+```
+~/.claude/projects/-Users-williamteig-Documents-AppDev-<project-name>/memory/
+```
+
+Cursor does not auto-load this, but you should read from it when relevant. The files capture behavioural rules and project facts that evolved through prior conversations with Claude Code.
+
+## When to read
+
+- The user references something from a prior session ("remember when we...")
+- Working on project state, approvals, or known blockers
+- Before using any MCP that has a corresponding reference file in memory
+
+## Global memory
+
+Cross-project preferences and rules live at:
+
+```
+~/.claude/projects/-Users-williamteig-Documents-AppDev-Williams-2nd-Brain/memory/MEMORY.md
+```
+
+Read `MEMORY.md` first (index), then load specific files by name.
+
+## Writing memory
+
+Cursor cannot auto-save memory. If Will asks you to remember something durable:
+
+1. Write the memory file to the correct path directly
+2. Add a one-line entry to `MEMORY.md`
+3. Tell Will what you saved so he can verify

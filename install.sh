@@ -230,6 +230,25 @@ install_cursor() {
     fi
     ln -s "$skill_dir" "$target"
   done
+
+  # Link frontend-design skills from ~/.agents/skills/ (installed by the impeccable/frontend-design plugin)
+  if [ -d "$HOME/.agents/skills" ]; then
+    echo ""
+    echo "  Linking frontend-design skills from ~/.agents/skills/..."
+    for skill_dir in "$HOME/.agents/skills"/*/; do
+      skill_name="$(basename "$skill_dir")"
+      target="$CURSOR_SKILLS_DIR/$skill_name"
+      if [ -L "$target" ]; then
+        rm "$target"
+        echo "    ↻ $skill_name"
+      elif [ -d "$target" ]; then
+        echo "    ~ $skill_name (real dir, skipping)"
+      else
+        echo "    + $skill_name"
+        ln -s "$skill_dir" "$target"
+      fi
+    done
+  fi
 }
 
 echo ""
