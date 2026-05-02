@@ -8,14 +8,15 @@ Scaffold a new orbytes client project. You may receive context from a prior qual
 For any decisions not yet made, ask one at a time:
 
 1. **Client name** — used for directory naming and config
-2. **Stack choice:**
+2. **Primary client contact name + email** — save these to `project.md` (`client_contact_name`, `client_contact_email`, plus `contact` display field)
+3. **Stack choice:**
    - **Framer** — primary stack. Visual builder + built-in CMS.
    - **Astro + CloudCannon** — for code-heavy builds needing full codebase + Git-based CMS. Scaffolded from `CloudCannon/astro-component-starter` (official starter, three-file component pattern) with CloudCannon agent-skills installed per-project.
-3. **Service tier** — Landing Page (single page, fixed price) or Full Website (multi-page with CMS, fixed price)
-4. **Branding** — Outsourced to Softriver (default) / Client providing / Brand already exists / No branding needed
-5. **Figma file URL** *(optional)* — paste URL or "not yet" (Figma is used on-request for mockups, not foundational)
-6. **Framer project URL** *(Framer only)* — paste URL or "not yet"
-7. **CloudCannon hosting mode** *(Astro only)* — CloudCannon-built (default — visual preview in the editor) / Headless + Cloudflare Pages (when the client prioritises an existing Cloudflare deploy pipeline over visual preview)
+4. **Service tier** — Landing Page (single page, fixed price) or Full Website (multi-page with CMS, fixed price)
+5. **Branding** — Outsourced to Softriver (default) / Client providing / Brand already exists / No branding needed
+6. **Figma file URL** *(optional)* — paste URL or "not yet" (Figma is used on-request for mockups, not foundational)
+7. **Framer project URL** *(Framer only)* — paste URL or "not yet"
+8. **CloudCannon hosting mode** *(Astro only)* — CloudCannon-built (default — visual preview in the editor) / Headless + Cloudflare Pages (when the client prioritises an existing Cloudflare deploy pipeline over visual preview)
 
 Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
@@ -40,7 +41,23 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    chmod +x .cursor/hooks/post_claude_edit.sh
    ```
 
-3. **Create Obsidian vault** — add a `.obsidian/` folder with these defaults:
+3. **Install project lint protocol** — copy template files from `$ORBYTES_TOOLKIT_PATH/website/templates/project-lint/`:
+   - `.project-lint.json`
+   - `.markdownlint-cli2.jsonc`
+   - `ops/lint-project.sh`
+   - `ops/lint-project.py`
+
+   Make lint scripts executable:
+   ```bash
+   chmod +x ops/lint-project.sh ops/lint-project.py
+   ```
+
+   This gives every project a project-local lint command:
+   ```bash
+   ./ops/lint-project.sh
+   ```
+
+4. **Create Obsidian vault** — add a `.obsidian/` folder with these defaults:
    ```
    .obsidian/
    ├── app.json          # {"showFrontmatter": true, "defaultViewMode": "preview"}
@@ -49,9 +66,9 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    ```
    This makes the project directory openable as an Obsidian vault.
 
-4. **Create `changelog/`** directory with an initial entry `changelog/YYYY-MM-DD-initial-scaffold.md` documenting the scaffold (use today's date).
+5. **Create `changelog/`** directory with an initial entry `changelog/YYYY-MM-DD-initial-scaffold.md` documenting the scaffold (use today's date).
 
-5. **Create knowledge base directories:**
+6. **Create knowledge base directories:**
    ```
    raw/
    ├── comms/          # Slack exports, emails, voice note transcripts
@@ -103,34 +120,36 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
 
    If directories already exist (migrating an existing project), skip creation.
 
-6. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
+7. **Generate `project.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/project.md`:
    - Replace all `{{PLACEHOLDERS}}` with gathered values
    - Set `stage: x-branding` if branding is outsourced, otherwise `1-research`
    - Set `stack:` to the chosen stack
+   - Ensure `client_contact_name` and `client_contact_email` are populated from the gathered contact details
+   - Keep `branding_vendor_domains` seeded with Softriver defaults unless a different branding vendor is explicitly chosen
    - Set `figma_url:`, `framer_url:` as applicable
    - Remove the branding stage section if "No branding needed"
 
-7. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
+8. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
    - Replace `{{CLIENT_NAME}}` and `{{BRANDING_SOURCE}}`
    - Set `{{DATE}}` to today's date
 
-8. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
+9. **Save qualification summary** — If a `qualification-summary.md` was generated in a prior step (or passed as context), save it into the project directory.
 
 ## Framer stack
 
-9. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
+10. **Copy Framer template** from `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`:
    - `CLAUDE.md` — replace `{{PROJECT_NAME}}` with the repo name
    - `.gitignore`
    - `README.md` — replace `{{CLIENT_NAME}}`, `{{FRAMER_URL}}`, `{{LIVE_URL}}`
 
-10. **Create directory structure:**
+11. **Create directory structure:**
     ```
     src/
     ├── scripts/        # Custom JS for CDN delivery (if needed)
     └── styles/         # Custom CSS for CDN delivery (if needed)
     ```
 
-11. **Populate `.cursor/rules/project-context.mdc`** from the project's `CLAUDE.md` (now that CLAUDE.md exists):
+12. **Populate `.cursor/rules/project-context.mdc`** from the project's `CLAUDE.md` (now that CLAUDE.md exists):
     ```bash
     { echo "---"; echo "description: Auto-mirror of this project's CLAUDE.md. Do not hand-edit."; echo "alwaysApply: true"; echo "---"; echo; cat CLAUDE.md; } > .cursor/rules/project-context.mdc
     ```
@@ -186,6 +205,9 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
       - `app.json` → `{"showFrontmatter": true, "defaultViewMode": "preview"}`
       - `appearance.json` → `{"baseFontSize": 16, "theme": "obsidian"}`
       - `core-plugins.json` → `["file-explorer", "search", "tag-pane", "page-preview", "templates"]`
+    - Copy project lint protocol from `$ORBYTES_TOOLKIT_PATH/website/templates/project-lint/`:
+      - `.project-lint.json`, `.markdownlint-cli2.jsonc`, `ops/lint-project.sh`, `ops/lint-project.py`
+      - `chmod +x ops/lint-project.sh ops/lint-project.py`
     - Generate `project.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/project.md` (placeholders filled)
     - Generate `brand.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md` (placeholders filled)
     - Create `knowledge/index.md` (seeded from the snippet in core step 5) + `knowledge/entries/.gitkeep`

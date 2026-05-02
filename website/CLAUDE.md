@@ -28,6 +28,35 @@ Every website project has at minimum:
 - `brand.md` — Logo, colors, fonts, brand voice
 - `CLAUDE.md` — This file (project-level AI instructions)
 - `changelog/` — Log of all changes made to the project
+- `ops/lint-project.sh` — Project lint protocol (style + ingest linkage checks)
+- `.project-lint.json` — Project-specific lint config (purpose keywords + ingest paths)
+
+## Project Lint Protocol
+
+Run this before handoff and after major ingests:
+
+```bash
+./ops/lint-project.sh
+```
+
+Semantic-only:
+
+```bash
+./ops/lint-project.sh semantic-only
+```
+
+Checks include:
+- Markdown hygiene for core project docs.
+- Orphaned files in `raw/` that are not referenced in tracked project docs.
+- Missing linkage from `knowledge/entries/*.md` to source files via frontmatter `source_file`.
+- Entries that do not connect back to project purpose keywords.
+
+## Client Operations Defaults
+
+- Use `project.md` as the source of truth for client contact details.
+- Default email target for client comms lookup is `project.md` frontmatter `client_contact_email`.
+- Default branding-source checks to `project.md` frontmatter `branding_vendor_domains` (Softriver domains by default) unless the project explicitly uses another vendor.
+- If contact details are missing in `project.md`, gather them and update the file before running comms workflows.
 
 ## Changelog
 

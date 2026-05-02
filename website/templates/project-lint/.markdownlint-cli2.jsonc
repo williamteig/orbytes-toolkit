@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+  "globs": [
+    "CLAUDE.md",
+    "project.md",
+    "brief.md",
+    "brand.md",
+    "voice.md",
+    "HANDOFF.md"
+  ],
+  "config": {
+    "default": false,
+    "MD009": true,
+    "MD047": true
+  }
+}

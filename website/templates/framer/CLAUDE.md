@@ -15,6 +15,28 @@ This is an orbytes **Framer** website project. The site is designed and built in
 - `brand.md` — Logo, colors, fonts, brand voice
 - `CLAUDE.md` — This file
 - `changelog/` — Log of all changes made to the project
+- `ops/lint-project.sh` — Project lint protocol (style + ingest linkage checks)
+- `.project-lint.json` — Project-specific lint config (purpose keywords + ingest paths)
+
+## Project Lint Protocol
+
+Run this before handoff and after major ingests:
+
+```bash
+./ops/lint-project.sh
+```
+
+Semantic-only:
+
+```bash
+./ops/lint-project.sh semantic-only
+```
+
+Checks include:
+- Markdown hygiene for core project docs.
+- Orphaned files in `raw/` that are not referenced in tracked project docs.
+- Missing linkage from `knowledge/entries/*.md` to source files via frontmatter `source_file`.
+- Entries that do not connect back to project purpose keywords.
 
 ## Custom Code
 
@@ -39,6 +61,13 @@ On a Framer project, the LLM assists with:
 - **CMS structure** — designing Framer CMS collections and fields
 - **Brand application** — ensuring `brand.md` tokens are applied consistently
 - **Project tracking** — updating `project.md` pipeline, logging changes
+
+## Client Operations Defaults
+
+- Treat `project.md` as the source of truth for client contact details.
+- Default client email target is `project.md` frontmatter `client_contact_email`.
+- For branding update checks, default to `project.md` `branding_vendor_domains` (Softriver domains by default) before asking follow-up questions.
+- If contact details are missing in `project.md`, ask for them and then update `project.md` first.
 
 ## Design System
 

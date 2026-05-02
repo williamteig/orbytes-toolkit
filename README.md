@@ -67,7 +67,19 @@ All symlinked files update across projects because they point back to this repo.
 
 - Website-specific CLAUDE.md (stack-agnostic wrapper)
 - `stacks.md` — documents all three website stacks (Astro, Framer, Webflow)
-- Templates: `project.md` (client project tracker), `brand.md` (brand kit), Astro starter files
+- Templates: `project.md` (client project tracker), `brand.md` (brand kit), project-lint protocol files
+
+### Project lint installer (existing repos)
+
+```bash
+./website/install-project-lint.sh /path/to/project
+```
+
+Installs:
+- `.project-lint.json`
+- `.markdownlint-cli2.jsonc`
+- `ops/lint-project.sh`
+- `ops/lint-project.py`
 
 ## How it works
 

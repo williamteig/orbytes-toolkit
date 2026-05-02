@@ -1,0 +1,29 @@
+{
+  "project_name": "orbytes-client-project",
+  "purpose_keywords": [
+    "client",
+    "website",
+    "audience",
+    "offer",
+    "conversion",
+    "brand"
+  ],
+  "ingest_paths": [
+    "raw"
+  ],
+  "ignore_globs": [
+    "**/.DS_Store"
+  ],
+  "reference_globs": [
+    "knowledge/index.md",
+    "knowledge/entries/**/*.md",
+    "project.md",
+    "brief.md",
+    "HANDOFF.md",
+    "CLAUDE.md"
+  ],
+  "entry_glob": "knowledge/entries/**/*.md",
+  "raw_root": "raw",
+  "raw_field": "source_file",
+  "allowlist_globs": {}
+}
