@@ -32,7 +32,7 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    │   └── post_claude_edit.sh           # mirrors CLAUDE.md → rules/project-context.mdc
    ├── mcp.json                          # empty — add project MCPs here if needed
    ├── rules/
-   │   ├── project-context.mdc           # auto-mirror of CLAUDE.md (populated in step 7/11)
+   │   ├── project-context.mdc           # auto-mirror of CLAUDE.md (populated after CLAUDE.md is generated)
    │   └── memory-bridge.mdc             # pointer to Claude Code memory
    └── settings.json                     # enables notion + figma plugins
    ```
@@ -41,21 +41,17 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    chmod +x .cursor/hooks/post_claude_edit.sh
    ```
 
-3. **Install project lint protocol** — copy template files from `$ORBYTES_TOOLKIT_PATH/website/templates/project-lint/`:
-   - `.project-lint.json`
-   - `.markdownlint-cli2.jsonc`
-   - `ops/lint-project.sh`
-   - `ops/lint-project.py`
-
-   Make lint scripts executable:
-   ```bash
-   chmod +x ops/lint-project.sh ops/lint-project.py
+3. **Create repo-local Claude MCP config** at `.mcp.json` with Workspace servers:
+   ```json
+   {
+     "mcpServers": {
+       "google-workspace-orbytes": { "type": "http", "url": "http://127.0.0.1:8121/mcp" },
+       "google-workspace-tat": { "type": "http", "url": "http://127.0.0.1:8122/mcp" },
+       "google-workspace-bmedia": { "type": "http", "url": "http://127.0.0.1:8123/mcp" }
+     }
+   }
    ```
-
-   This gives every project a project-local lint command:
-   ```bash
-   ./ops/lint-project.sh
-   ```
+   Keep this file in every scaffolded repo so Claude Code has consistent Workspace access regardless of global machine config.
 
 4. **Create Obsidian vault** — add a `.obsidian/` folder with these defaults:
    ```
@@ -126,10 +122,11 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    - Set `stack:` to the chosen stack
    - Ensure `client_contact_name` and `client_contact_email` are populated from the gathered contact details
    - Keep `branding_vendor_domains` seeded with Softriver defaults unless a different branding vendor is explicitly chosen
+   - For Framer projects, keep `framepad_template_url` set to `https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp`
    - Set `figma_url:`, `framer_url:` as applicable
    - Remove the branding stage section if "No branding needed"
 
-8. **Generate `brand.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md`:
+8. **Generate `design.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/design.md`:
    - Replace `{{CLIENT_NAME}}` and `{{BRANDING_SOURCE}}`
    - Set `{{DATE}}` to today's date
 
@@ -154,9 +151,19 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
     { echo "---"; echo "description: Auto-mirror of this project's CLAUDE.md. Do not hand-edit."; echo "alwaysApply: true"; echo "---"; echo; cat CLAUDE.md; } > .cursor/rules/project-context.mdc
     ```
 
+13. **Proofly MCP setup** (orbytes' primary Framer MCP — headless, no plugin tab needed after setup; see `framer.md` → "MCP Access"). Runs once the Framer project exists — if it hasn't been created yet (no `framer_url`), record this as a pending task in `project.md` and do it in the first Framer session instead. Ask Will to:
+    1. Open the project in Framer → **Proofly MCP** plugin → copy the MCP URL (contains `projectId` + `secret`)
+    2. Generate a **Framer API key** (Site Settings → General → API Keys)
+
+    Then:
+    - Save credentials to repo-root `.env` (gitignored — never in `project.md` or tracked files; the vault is a client deliverable). Include the account-wide `prooflyToken` (copy from another project's `.env` or `~/.claude.json`)
+    - Register headless: `setServerApiKey({projectId, secret, apiKey, projectUrl})` with `projectUrl` = native editor URL (`https://framer.com/projects/<slug>--<id>`, no query params)
+    - Verify with `getServerApiKeyStatus` → `registered: true`
+    - Note in `.env` comments: Proofly holds the key in-memory — re-register when `getServerApiKeyStatus` flips to `false`
+
 ## Astro + CloudCannon stack
 
-> **Important:** Do not run the generic "core setup" steps 1-8 in the project directory before this. The Astro scaffold creates the project directory itself via `npx create-astro-component-starter`. The vault overlay in step 11 below replaces the Obsidian/knowledge/raw/changelog setup from core steps 3-5.
+> **Important:** Do not run the generic "core setup" steps 1-9 in the project directory before this. The Astro scaffold creates the project directory itself via `npx create-astro-component-starter`. The vault overlay in step 11 below replaces the Obsidian/knowledge/raw/changelog setup from core steps 4-6.
 
 9. **Scaffold via the Component Starter** (CloudCannon's official, April 2026 canonical):
    ```bash
@@ -205,11 +212,8 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
       - `app.json` → `{"showFrontmatter": true, "defaultViewMode": "preview"}`
       - `appearance.json` → `{"baseFontSize": 16, "theme": "obsidian"}`
       - `core-plugins.json` → `["file-explorer", "search", "tag-pane", "page-preview", "templates"]`
-    - Copy project lint protocol from `$ORBYTES_TOOLKIT_PATH/website/templates/project-lint/`:
-      - `.project-lint.json`, `.markdownlint-cli2.jsonc`, `ops/lint-project.sh`, `ops/lint-project.py`
-      - `chmod +x ops/lint-project.sh ops/lint-project.py`
     - Generate `project.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/project.md` (placeholders filled)
-    - Generate `brand.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/brand.md` (placeholders filled)
+    - Generate `design.md` from `$ORBYTES_TOOLKIT_PATH/website/templates/design.md` (placeholders filled)
     - Create `knowledge/index.md` (seeded from the snippet in core step 5) + `knowledge/entries/.gitkeep`
     - Create `raw/comms/.gitkeep`, `raw/docs/.gitkeep`, `raw/feedback/.gitkeep`
     - Create `discovery/current-site/.gitkeep`, `discovery/inspirational-material/index.md`, `discovery/inspirational-material/raw/.gitkeep`
@@ -223,14 +227,14 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
       .obsidian/graph.json
       ```
 
-12. **Merge `CLAUDE.md`** — combine `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a project `CLAUDE.md`. Fill in the "Record for this project" section with stack=astro, CMS=cloudcannon, hosting=(chosen mode from step 7). Then populate `.cursor/rules/project-context.mdc`:
+12. **Merge `CLAUDE.md`** — combine `$ORBYTES_TOOLKIT_PATH/global/CLAUDE.md` and `$ORBYTES_TOOLKIT_PATH/website/CLAUDE.md` into a project `CLAUDE.md`. Fill in the "Record for this project" section with stack=astro, CMS=cloudcannon, hosting=(chosen mode from step 8). Then populate `.cursor/rules/project-context.mdc`:
     ```bash
     { echo "---"; echo "description: Auto-mirror of this project's CLAUDE.md. Do not hand-edit."; echo "alwaysApply: true"; echo "---"; echo; cat CLAUDE.md; } > .cursor/rules/project-context.mdc
     ```
 
 13. **Run `npm audit fix`** to clean up non-breaking vulnerabilities from transitive deps. Do NOT use `--force`. Record the residual count in the initial-scaffold changelog entry.
 
-14. **Apply client brand tokens** to `src/styles/variables/` (colours, typography, spacing) from `brand.md`. If the brand uses custom fonts, update `site-fonts.mjs`.
+14. **Apply client brand tokens** to `src/styles/variables/` (colours, typography, spacing) from `design.md`. If the brand uses custom fonts, update `site-fonts.mjs`.
 
 15. **Verify build:**
     ```bash
@@ -285,7 +289,7 @@ If Will explicitly says "skip the bridge for now" — write a stub `context-brid
 
 ## Toolkit source
 
-- `project.md`, `brand.md` templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/`
+- `project.md`, `design.md` templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/`
 - Global rules live at `$ORBYTES_TOOLKIT_PATH/global/`
 - **Framer stack** templates live at `$ORBYTES_TOOLKIT_PATH/website/templates/framer/`
 - **Astro stack** has no local template — the canonical source is `CloudCannon/astro-component-starter`, fetched at scaffold time via `npx create-astro-component-starter`. This keeps the orbytes Astro stack continuously up-to-date with CloudCannon's latest componentry without maintaining a fork.

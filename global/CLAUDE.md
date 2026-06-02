@@ -45,7 +45,7 @@ The bridge skill itself starts with a questionnaire — it asks Will what he alr
 | **Astro + CloudCannon** | Code-heavy projects needing full codebase + Git-based CMS. |
 | **Webflow** | Legacy/selective. Only when the engagement specifically uses Webflow. |
 
-All website-tier projects have a local repo for `project.md`, `brand.md`, and any custom code (even Framer/Webflow projects may have CDN-delivered scripts).
+All website-tier projects have a local repo for `project.md`, `design.md`, and any custom code (even Framer/Webflow projects may have CDN-delivered scripts).
 
 ## Skills
 

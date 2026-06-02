@@ -68,6 +68,15 @@ orbytes keeps multiple website stacks current — Framer and Astro+CloudCannon t
 - Avoid open questions shaped like "should we drop X?" or "should we flip the default?"
 - This is deliberate positioning so orbytes can respond to any change in the marketplace, not an unexamined default
 
+## Google Workspace account routing
+
+When using Google Workspace MCP:
+
+- Default to `google-workspace-orbytes` for orbytes client repos.
+- Default to `google-workspace-tat` for TAT repos.
+- Use `google-workspace-bmedia` only when explicitly requested for legacy inbox/project history.
+- If account context is ambiguous, ask before taking Gmail/Drive actions.
+
 ## William's email voice
 
 When drafting any email Will sends under his orbytes identity (and by extension any 1:1 personal/professional email), apply the voice checklist at:

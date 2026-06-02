@@ -16,8 +16,9 @@ Framer projects have a minimal local repo:
 ```
 repo/
 ├── project.md              # Source of truth
-├── brand.md                # Brand kit
+├── design.md               # Style reference
 ├── CLAUDE.md               # Project-level AI instructions
+├── .env                    # Proofly/Framer credentials (gitignored — see MCP Access)
 └── src/                    # Custom code (if needed)
     ├── scripts/            # JS for CDN delivery
     └── styles/             # CSS for CDN delivery
@@ -25,13 +26,41 @@ repo/
 
 The Framer project URL is stored in `project.md` frontmatter as `framer_url`.
 
+## MCP Access — Proofly (primary, as of 2026-06-02)
+
+orbytes uses **Proofly MCP** (112 tools, headless-capable) as the primary MCP for Framer projects. The first-party `framer-mcp` remains a fallback for in-session relay work, but it requires its plugin tab open every session — Proofly doesn't, once set up. Full reference: 2nd Brain [[proofly]].
+
+**Connector model — one connector serves all projects:**
+- A single user-scope `proofly` connector is registered in `~/.claude.json`. The `prooflyToken` in its URL is **account-wide** (confirmed 2026-06-02: same token across TAT and The Code Pizza).
+- Every Proofly tool call passes `projectId` + `secret` as **per-call arguments** — read them from the project's `.env`. Do not register per-project connectors.
+
+**Credential scoping:**
+
+| Credential | Scope | Source |
+|---|---|---|
+| `projectId` + `secret` | Per-project | Proofly MCP plugin panel (open once in the project) |
+| `prooflyToken` (`mcp_srv_…`) | Account-wide | Plugin → Server API Access → Generate Token (already done) |
+| Framer API key (`fr_…`) | Per-project | Framer Site Settings → General → API Keys (~5yr expiry) |
+
+**Per-project setup (one-time, when the Framer project is created):**
+1. Open the project in Framer → open the **Proofly MCP** plugin → copy `projectId` + `secret` from the panel URL.
+2. Generate a **Framer API key**: Site Settings → General → API Keys.
+3. Save all credentials to the repo-root **`.env`** (gitignored). **Never** put them in `project.md` or any tracked file — the vault is handed to the client at completion.
+4. Register headless: `setServerApiKey({projectId, secret, apiKey, projectUrl})`. `projectUrl` must be Framer's **native editor URL** (`https://framer.com/projects/<slug>--<id>`, query params stripped) — Proofly's `projectId` hash is rejected.
+
+**Operational gotchas:**
+- Proofly holds the Framer API key **in-memory** (`expiresAfter: process restart`). When calls fail with *"Plugin not connected and no Server API key registered"*, check `getServerApiKeyStatus` and re-run `setServerApiKey` from the project's `.env`.
+- **UI-bound tools** (selection, zoom, notify, `htmlSnapshot`) still require the plugin tab open — headless covers styles, pages, nodes, CMS, code files, audits.
+- **CMS enum values cannot be written headless** — they silently fall back to the first case. Set enums via plugin-relay (tab open).
+- `secret`/`prooflyToken` are full write credentials baked into URLs — treat like passwords, never commit.
+
 ## Design Conventions
 
 - Design directly in Framer — do not create separate Figma mockups unless the project also needs a Figma file for a specific reason
 - Use Framer's built-in responsive breakpoints
 - Use Framer's built-in interactions and animations — avoid custom JS unless necessary
 - Use Framer CMS for any structured content (blog posts, team members, etc.)
-- Apply brand tokens from `brand.md` to Framer's design system (colors, fonts)
+- Apply brand tokens from `design.md` to Framer's design system (colors, fonts)
 
 ## Custom Code via CDN
 
@@ -54,3 +83,12 @@ Content lives inside Framer, not in local markdown files. If the client needs Gi
 
 **Gotcha — custom fonts need to be uploaded to Framer.**
 Framer supports Google Fonts natively. For custom/self-hosted fonts, upload the font files directly in Framer's font settings.
+
+**Gotcha — `GF;Manrope-*` selectors are deprecated; use `FS;Manrope-*` (Fontshare).**
+Several popular Google Fonts (including Manrope) have been moved to Fontshare inside Framer. Setting font via MCP with `GF;Manrope-700` still resolves, but Framer flags it as "Manrope (Deprecated)" in the font picker UI. The current selector is `FS;Manrope-{light|regular|medium|semibold|bold|extrabold|variable}`. When unsure for any font, use the `searchFonts` MCP tool (or look at Framer's picker for "(Deprecated)" tags) before applying. See [[framer-mcp#Font selectors]].
+
+**Gotcha — Framer Styles panel flattens slash-namespaced names.**
+A style named `Neutral / Surface Main` shows in the Styles panel as just `Surface Main` under the `Color` folder. Full path is only visible in the picker dropdown, the inspector, and MCP responses. For [[framepad]]-based projects (where there are hundreds of slash-namespaced styles), install the **Style Manager** plugin (Framer Marketplace) for orientation. See [[framer-mcp#Style management caveats]] and [[framer-gotchas#Styles panel hides folder prefixes]].
+
+**Gotcha — MCP can't delete color or text styles.**
+`manageColorStyle` / `manageTextStyle` only expose `create` and `update` (verified on first-party framer-mcp; Proofly exposes the same pair — confirm before assuming delete exists). Style deletion is manual in Framer's UI (right-click style → Delete in the Styles panel). Plan an end-of-session manual cleanup pass when LLM-driven token work creates duplicates or leftovers.

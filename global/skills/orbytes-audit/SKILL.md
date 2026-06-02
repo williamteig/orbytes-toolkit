@@ -15,10 +15,10 @@ Audit the current orbytes project by comparing `project.md` pipeline checkmarks 
 | Pipeline item pattern | What to check |
 |---|---|
 | Logo delivered | `assets/` contains an SVG or PNG logo file |
-| Colour palette defined | `brand.md` has a populated colour palette table (not template placeholders) |
-| Typography selected | `brand.md` has actual font names (not "Font Name" placeholders) |
-| Brand voice documented | `voice.md` exists and has content, OR `brand.md` has a populated Brand Voice section |
-| Brand kit saved to `brand.md` | `brand.md` exists and is populated (not just the template) |
+| Colour palette defined | `design.md` has a populated color token table (not template placeholders) |
+| Typography selected | `design.md` has actual font names (not placeholders) |
+| Brand voice documented | `voice.md` exists and has content, OR `design.md` documents tone guidance |
+| Brand system saved to `design.md` | `design.md` exists and is populated (not just the template) |
 | Discovery brief complete | `brief.md` exists and has content |
 | Site map finalized | `content/` directory has page files matching the site map in `brief.md` |
 | CMS schema designed | Content files in `content/` have CMS field definitions |
@@ -45,7 +45,7 @@ Stage: [current stage from project.md]
 
 VERIFIED ✅
 - [x] Logo delivered — assets/logo.svg exists
-- [x] Colour palette defined — brand.md has 6 colours populated
+- [x] Colour palette defined — design.md has 6 colors populated
 
 FAILED ❌
 - [x] Competitor audit — MARKED COMPLETE but no competitor audit found in repo

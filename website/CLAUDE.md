@@ -25,7 +25,7 @@ See `stacks.md` for detailed conventions per stack.
 
 Every website project has at minimum:
 - `project.md` — Single source of truth for status, stages, tasks, approvals
-- `brand.md` — Logo, colors, fonts, brand voice
+- `design.md` — Style reference: tokens, components, do/don't, and prompt-ready implementation guidance
 - `CLAUDE.md` — This file (project-level AI instructions)
 - `changelog/` — Log of all changes made to the project
 - `ops/lint-project.sh` — Project lint protocol (style + ingest linkage checks)
@@ -169,7 +169,7 @@ src/
 ### Styling
 
 - **Vanilla CSS with CSS custom properties** — no Tailwind. The starter is intentionally framework-free so the CSS footprint stays small.
-- Brand tokens from `brand.md` go into `src/styles/variables/` (colours, typography, spacing).
+- Brand tokens from `design.md` go into `src/styles/variables/` (colours, typography, spacing).
 - Theme variants (light/dark) live in `src/styles/themes/`.
 - Use utility classes only where the starter already provides them; don't add Tailwind or another utility framework.
 

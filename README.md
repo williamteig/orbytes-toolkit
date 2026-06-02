@@ -67,7 +67,7 @@ All symlinked files update across projects because they point back to this repo.
 
 - Website-specific CLAUDE.md (stack-agnostic wrapper)
 - `stacks.md` — documents all three website stacks (Astro, Framer, Webflow)
-- Templates: `project.md` (client project tracker), `brand.md` (brand kit), project-lint protocol files
+- Templates: `project.md` (client project tracker), `design.md` (style reference + token system), project-lint protocol files
 
 ### Project lint installer (existing repos)
 
@@ -114,7 +114,7 @@ orbytes-toolkit/
 │   ├── stacks.md
 │   └── templates/
 │       ├── project.md     # Client project template
-│       ├── brand.md       # Brand kit template
+│       ├── design.md      # Style reference template
 │       └── astro/         # Astro starter files
 └── .cursor/               # Committed symlinks for Cursor parity
 ```

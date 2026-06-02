@@ -12,7 +12,7 @@ This is an orbytes **Framer** website project. The site is designed and built in
 ## Project Files
 
 - `project.md` — Single source of truth for status, stages, tasks, approvals
-- `brand.md` — Logo, colors, fonts, brand voice
+- `design.md` — Style reference: tokens, components, do/don't, prompt-ready implementation guidance
 - `CLAUDE.md` — This file
 - `changelog/` — Log of all changes made to the project
 - `ops/lint-project.sh` — Project lint protocol (style + ingest linkage checks)
@@ -59,7 +59,7 @@ On a Framer project, the LLM assists with:
 - **Design & build via Framer MCP** — direct read/write access to Framer project (styles, components, layout, CMS, pages). Framer MCP plugin must be open in Framer during use.
 - **Custom code** — JS/CSS that goes beyond Framer's built-in capabilities
 - **CMS structure** — designing Framer CMS collections and fields
-- **Brand application** — ensuring `brand.md` tokens are applied consistently
+- **Brand application** — ensuring `design.md` tokens and component rules are applied consistently
 - **Project tracking** — updating `project.md` pipeline, logging changes
 
 ## Client Operations Defaults
@@ -72,6 +72,8 @@ On a Framer project, the LLM assists with:
 ## Design System
 
 All design and development happens in Framer. No separate design tool (Figma is dropped). Use Framepad as the component/design system starting point for new builds.
+
+**Canonical Framepad remix URL (tracking stripped):** `https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp`
 
 ## Changelog
 

@@ -138,7 +138,7 @@ Each entry in the index looks like:
 ## Step 6 — Cross-reference
 
 Check if any extracted information should update other project files:
-- **brand.md** — if the source contains brand decisions (colors, fonts, tone)
+- **design.md** — if the source contains brand decisions (colors, fonts, tone, component rules)
 - **project.md** — if the source contains scope changes, timeline updates, or blocker resolutions
 - **discovery-brief.md** — if the source adds or corrects discovery information
 
@@ -146,7 +146,7 @@ Do not auto-update these files. Instead, suggest them:
 
 ```
 Cross-reference suggestions:
-- brand.md — client confirmed primary color is #1E3A5F (currently placeholder)
+- design.md — client confirmed primary color is #1E3A5F (currently placeholder)
 - project.md — client approved Gate 1, update Approvals table
 ```
 

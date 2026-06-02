@@ -13,13 +13,13 @@ Every client project has a `project.md` file in its repo root. This is the singl
 
 ## Brand Kit
 
-Each project also has a `brand.md` file containing:
+Each project also has a `design.md` file containing:
 - Logo files and usage
-- Colour palette (hex codes)
-- Typography (fonts, weights, sizes)
-- Brand voice and tone
+- Color/system tokens
+- Typography (families, weights, scale)
+- Component and usage rules
 
-Brand details should be read from `brand.md`, not assumed or pulled from elsewhere.
+Brand details should be read from `design.md`, not assumed or pulled from elsewhere.
 
 ## Project Record Fields
 

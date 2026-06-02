@@ -49,7 +49,7 @@ Using Will's answers as the search lens:
 
 ### Phase 3 — Write `context-bridge.md`
 
-Save a synthesis to `context-bridge.md` in the project root (alongside `project.md`, `brand.md`). This file is the per-project state marker — its presence tells future sessions that the bridge has been run.
+Save a synthesis to `context-bridge.md` in the project root (alongside `project.md`, `design.md`). This file is the per-project state marker — its presence tells future sessions that the bridge has been run.
 
 Format:
 

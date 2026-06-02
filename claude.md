@@ -30,7 +30,7 @@ orbytes-toolkit/
 │   ├── stacks.md              # Documents all website-tier stacks
 │   └── templates/
 │       ├── project.md         # Client project.md template (Obsidian)
-│       ├── brand.md           # Brand kit template
+│       ├── design.md          # Style reference template
 │       ├── astro/             # Astro + Tailwind starter files
 │       └── framer/            # Framer project starter files (TODO)
 └── .cursor/                   # Committed symlinks for Cursor parity
@@ -57,7 +57,7 @@ orbytes-toolkit/
 
 Scaffolds a new website project:
 1. **Qualify** — Walk through client readiness checklist
-2. **Scaffold** — Create project directory, Obsidian vault, project.md, brand.md, stack-specific files, git repo
+2. **Scaffold** — Create project directory, Obsidian vault, project.md, design.md, stack-specific files, git repo
 3. **Discovery** — Process questionnaire responses (if available, otherwise run later)
 
 ## How to work on this project

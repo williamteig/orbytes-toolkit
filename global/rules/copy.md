@@ -9,7 +9,7 @@ alwaysApply: false
 
 Before writing any copy, these must exist in the project:
 - `voice.md` — tone, principles, references, what NOT to do
-- `brand.md` — visual identity
+- `design.md` — visual identity (tokens + style rules)
 - `brief.md` — business context, audience, goals, page list
 
 If any of these are missing or thin, go back to discovery first. Copy without voice direction is guesswork.

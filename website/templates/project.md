@@ -2,6 +2,12 @@
 title: "{{CLIENT_NAME}} Website"
 client: "{{CLIENT_NAME}}"
 contact: "{{CONTACT_NAME}} ({{CONTACT_EMAIL}})"
+client_contact_name: "{{CONTACT_NAME}}"
+client_contact_email: "{{CONTACT_EMAIL}}"
+client_contact_role: "primary contact"
+branding_vendor_domains:
+  - softriver.co
+  - www.softriver.co
 business: orbytes
 status: active
 stage: 1-research
@@ -12,6 +18,7 @@ target_launch: ""
 branding: "{{BRANDING}}"
 figma_url: ""
 framer_url: ""
+framepad_template_url: "https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp"
 webflow_url: ""
 github_url: ""
 live_url: ""
@@ -24,7 +31,7 @@ live_url: ""
   - [ ] Colour palette defined
   - [ ] Typography selected
   - [ ] Brand voice documented
-  - [ ] Brand kit saved to `brand.md`
+  - [ ] Brand system saved to `design.md`
 - [ ] **1. Research & Discovery** ← CURRENT
   - [ ] Asset documentation
   - [ ] Client discovery (19 questions)

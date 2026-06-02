@@ -9,7 +9,7 @@ Answer a question by searching the project's ingested knowledge base.
 
 1. **Read `knowledge/index.md`** — scan the entry list for relevant entries based on the question.
 2. **Read relevant entries** from `knowledge/entries/` — prioritize entries whose title, tags, or summary relate to the question. Read the full entry, not just the summary.
-3. **Also check** `discovery-brief.md`, `brand.md`, and `project.md` — these contain structured knowledge that may answer the question without needing raw entries.
+3. **Also check** `discovery-brief.md`, `design.md`, and `project.md` — these contain structured knowledge that may answer the question without needing raw entries.
 4. **Synthesize an answer** — cite specific entries and quote the client where possible.
 
 ## Output format
@@ -33,7 +33,7 @@ Confidence: high | medium | low
 
 If the knowledge base has no relevant entries:
 1. Say so clearly — "No client input found on this topic."
-2. Check if the topic is covered in `discovery-brief.md` or `brand.md` (these predate the ingestion system).
+2. Check if the topic is covered in `discovery-brief.md` or `design.md` (these predate the ingestion system).
 3. Suggest: "You may want to ask the client about this and ingest their response."
 
 ## Contradiction awareness

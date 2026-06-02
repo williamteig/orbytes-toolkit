@@ -1,53 +1,24 @@
 ---
-title: "{{CLIENT_NAME}} — Brand Kit"
+title: "{{CLIENT_NAME}} — Brand Kit (Legacy)"
 client: "{{CLIENT_NAME}}"
 branding_source: "{{BRANDING_SOURCE}}"
 updated: "{{DATE}}"
 ---
 
-## Logo
+# Brand Kit (Legacy)
 
-- **Primary logo:** (file path or description)
-- **Logo mark:** (file path or description)
-- **Favicon:** (file path or description)
-- **Logo usage notes:**
+Use `design.md` as the canonical branding source for all new projects.
 
-## Colour Palette
+This file is kept only for backwards compatibility with older repos.
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| Primary | #000000 | Headings, buttons, key accents |
-| Secondary | #000000 | Supporting elements |
-| Background | #FFFFFF | Page background |
-| Surface | #F5F5F5 | Cards, sections |
-| Text | #1A1A1A | Body copy |
-| Text Light | #6B7280 | Captions, secondary text |
-| Accent | #000000 | CTAs, links, highlights |
+## Migration Map
 
-## Typography
+- `brand.md` "Logo" -> `design.md` logo details in component + usage sections
+- `brand.md` "Colour Palette" -> `design.md` `## Tokens — Colors`
+- `brand.md` "Typography" -> `design.md` `## Tokens — Typography`
+- `brand.md` "Assets" -> `design.md` `## Imagery`
+- `brand.md` freeform notes -> `design.md` `## Do's and Don'ts`, `## Layout`, and `## Agent Prompt Guide`
 
-| Role | Font | Weight | Size (desktop) |
-|------|------|--------|----------------|
-| Heading | Font Name | Bold (700) | 48px / 36px / 24px |
-| Body | Font Name | Regular (400) | 16px |
-| Caption | Font Name | Regular (400) | 14px |
-| Button | Font Name | Semi-Bold (600) | 16px |
+## Rule
 
-- **Font source:** (Google Fonts / Adobe Fonts / self-hosted)
-- **Font files:** (path to local files if self-hosted)
-
-## Brand Voice
-
-- **Tone:** (e.g., professional but approachable, bold and direct)
-- **Tagline:** (if applicable)
-- **Key messaging:**
-
-## Assets
-
-- **Photography style:** (e.g., warm natural light, high contrast editorial)
-- **Icon style:** (e.g., line icons, filled, duotone)
-- **Asset folder:** (path to brand assets)
-
-## Notes
-
-(Additional brand guidelines, do's and don'ts, client preferences)
+When both files exist, always treat `design.md` as source of truth.

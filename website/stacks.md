@@ -24,7 +24,7 @@ Orbytes delivers websites using one of three stacks. The stack is chosen during 
 - Component Starter ships with 40+ components in `src/components/building-blocks/`, `page-sections/`, `navigation/` — modify in place, don't rebuild structure
 - File-based routing in `src/pages/`
 - Content collections for pages, blog, case studies (`src/content/`)
-- Design tokens from `brand.md` applied to `src/styles/variables/`
+- Design tokens from `design.md` applied to `src/styles/variables/`
 - CloudCannon config in `cloudcannon.config.yml` (pre-populated by starter) — see global rule `cloudcannon.md`
 - Component docs at `/component-docs/` (dev-only) — visual builder for all components
 - Git: template history is inherited on clone; orbytes commits on top. `upstream` remote points at `CloudCannon/astro-component-starter` for future template pulls
@@ -40,7 +40,7 @@ Orbytes delivers websites using one of three stacks. The stack is chosen during 
 - **Builder:** Framer (visual design + build tool)
 - **CMS:** Framer CMS (built-in)
 - **Deploy:** Framer hosting (custom domain connected)
-- **Code repo:** Minimal — `project.md`, `brand.md`, `CLAUDE.md`, and any custom code
+- **Code repo:** Minimal — `project.md`, `design.md`, `CLAUDE.md`, and any custom code
 
 **Scaffold command:** `/new-orbytes-website` with stack choice `framer`
 
@@ -56,7 +56,7 @@ Orbytes delivers websites using one of three stacks. The stack is chosen during 
 ```
 repo/
 ├── project.md
-├── brand.md
+├── design.md
 ├── CLAUDE.md
 ├── src/                    # Custom scripts/styles for CDN delivery
 │   ├── scripts/
@@ -76,7 +76,7 @@ Scripts are embedded in Framer via `<script src="https://cdn.jsdelivr.net/gh/wil
 - **Builder:** Webflow Designer
 - **CMS:** Webflow CMS
 - **Deploy:** Webflow hosting
-- **Code repo:** Minimal — `project.md`, `brand.md`, `CLAUDE.md`, and any custom code
+- **Code repo:** Minimal — `project.md`, `design.md`, `CLAUDE.md`, and any custom code
 
 **Not the default for new work.** Always confirm in `project.md` whether a Webflow build exists before assuming.
 

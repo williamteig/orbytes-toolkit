@@ -50,7 +50,7 @@ Never skip stages or begin a later stage before the prior approval gate is passe
 
 At project completion, the client receives the **project vault** alongside the website. The vault contains:
 - `project.md` — full project record
-- `brand.md` — brand kit (colours, fonts, voice)
+- `design.md` — style reference (tokens, components, do/don't rules)
 - `voice.md` — tone and positioning
 - `brief.md` — business context and audience
 - `discovery/` — all discovery material, inspiration, perspective tests

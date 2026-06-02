@@ -7,7 +7,7 @@ This command orchestrates the full client onboarding flow for a new orbytes webs
 | Step | Skill | What it does | Output |
 |------|-------|--------------|--------|
 | 1 | `orbytes-qualify` | Client qualification interview | `qualification-summary.md` |
-| 2 | `orbytes-scaffold` | Create project directory, Obsidian vault, config, git repo | Project directory with `.obsidian/`, `project.md`, `brand.md`, `CLAUDE.md`, etc. |
+| 2 | `orbytes-scaffold` | Create project directory, Obsidian vault, config, git repo | Project directory with `.obsidian/`, `project.md`, `design.md`, `CLAUDE.md`, etc. |
 | 3 | `orbytes-discovery` | Process discovery questionnaire responses | `discovery-brief.md` |
 
 ## How to run
@@ -33,7 +33,7 @@ Invoke the `orbytes-scaffold` skill. Pass forward all context gathered during qu
 
 The scaffold step will:
 - Create the project directory with Obsidian vault (`.obsidian/`)
-- Generate `project.md`, `brand.md`, `CLAUDE.md`
+- Generate `project.md`, `design.md`, `CLAUDE.md`
 - Save `qualification-summary.md` into the project directory
 - Set up stack-specific files
 - Init git and create GitHub repo
