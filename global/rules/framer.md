@@ -50,7 +50,7 @@ orbytes uses **Proofly MCP** (112 tools, headless-capable) as the primary MCP fo
 
 **Operational gotchas:**
 - Proofly holds the Framer API key **in-memory** (`expiresAfter: process restart`). When calls fail with *"Plugin not connected and no Server API key registered"*, check `getServerApiKeyStatus` and re-run `setServerApiKey` from the project's `.env`.
-- **UI-bound tools** (selection, zoom, notify, `htmlSnapshot`) still require the plugin tab open — headless covers styles, pages, nodes, CMS, code files, audits.
+- **UI-bound tools** (selection, zoom, notify, `htmlSnapshot`) always require the plugin tab open. Headless is *documented* to cover styles, pages, nodes, CMS, code files, audits — but actual handler coverage is unverified. ⚠️ 2026-06-02 (The Code Pizza): registration validated (`registered:true`) yet **all project-reaching calls timed out headless** (searchFonts, getCurrentUser, getAllPages, via connector and raw curl). If headless hangs, fall back to opening the Proofly plugin tab (relay mode) and re-test headless later — and update this note when the cause is known.
 - **CMS enum values cannot be written headless** — they silently fall back to the first case. Set enums via plugin-relay (tab open).
 - `secret`/`prooflyToken` are full write credentials baked into URLs — treat like passwords, never commit.
 
