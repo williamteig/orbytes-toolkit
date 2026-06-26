@@ -11,6 +11,14 @@ Every orbytes client project has a living inspiration library at `discovery/insp
 
 The inspiration **library** here is the *source*. The optional **Moodboard** (Stage M — see `workflow.md` and `figma.md`) is its consolidated visual *output*: one Figma canvas where the strongest references are splashed together **for the client** to agree a visual direction before Design. Material flows one way — gather into the library here, then pull selected references onto the moodboard. When a moodboard exists, its link is recorded in `project.md` as `moodboard_url`.
 
+### Library → Moodboard → Generated imagery
+
+The library feeds two downstream things, in order:
+1. **Moodboard** (`orbytes-moodboard`) — the client-facing direction canvas.
+2. **Generated imagery** (`orbytes-image-generation`) — once direction is locked, 2–3 library references + `design.md` are fed to an AI image generator (Pixa / Nano Banana 2) to produce **shippable** site photography.
+
+**Provenance flip — the line that matters.** Library/moodboard references are **direction-only and never shipped** (unverified provenance, per the copyright stance below). A **generated** image *is* cleared for live use, because final assets may be self-shot, properly licensed, **or AI-generated from this direction**. So the generation step is the bridge that converts an un-shippable reference into a shippable asset — generate *from* the references, never ship the references.
+
 ## Reference imagery sourcing (post-discovery) — STANDARD PROCEDURE
 
 Once discovery is complete, proactively seed the inspiration library with reference photography pulled from the discovery + brand keywords. This is a standard step, not a bespoke one.

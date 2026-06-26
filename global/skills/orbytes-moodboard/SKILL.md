@@ -85,6 +85,9 @@ The moodboard's home is the client's Figma file (record the base URL in `project
 ## Output
 A single self-contained moodboard frame on the client's Figma page: brand ground, four labelled sections, uniform image grid, numbered captions matching the library. Record `moodboard_url` in `project.md`.
 
+## Downstream — generating shippable imagery
+The locked moodboard + library is the **spec** for AI image generation. Once the board is agreed, hand off to **`orbytes-image-generation`**: it selects 2–3 library references, builds a prompt spec against `design.md`, and generates hyper-realistic, on-brand photography via Pixa (Nano Banana 2). Key connection: the library references are **direction-only (never shipped)**, but a **generated** image *is* cleared for live use — that skill is the bridge that converts one into the other.
+
 ---
 
 ## Worked example — Nina Van Sant (2026-06-26)

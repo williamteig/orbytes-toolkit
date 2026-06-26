@@ -56,6 +56,7 @@ All website-tier projects have a local repo for `project.md`, `design.md`, and a
 - **orbytes-scaffold** — Scaffold a new client project with correct stack and structure.
 - **orbytes-discovery** — Process client discovery questionnaire responses.
 - **orbytes-moodboard** — Build the photography moodboard (Stage M): derive image keywords from discovery, research references on Yandex, curate into the inspiration library, and assemble the moodboard in the client's Figma file.
+- **orbytes-image-generation** — Turn the locked moodboard into shippable photography: select library references, build a prompt spec against `design.md`, and generate hyper-realistic, on-brand imagery via Pixa (Nano Banana 2). The downstream half of the moodboard pipeline.
 - **orbytes-audit** — Audit pipeline checkmarks against actual repo state. Run before gate approvals or health checks.
 - **orbytes-ingest** — Ingest client comms, docs, and feedback into the project knowledge base.
 - **orbytes-query** — Search the knowledge base for what the client said about a topic.
