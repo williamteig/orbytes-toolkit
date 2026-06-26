@@ -46,7 +46,6 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    {
      "mcpServers": {
        "google-workspace-orbytes": { "type": "http", "url": "http://127.0.0.1:8121/mcp" },
-       "google-workspace-tat": { "type": "http", "url": "http://127.0.0.1:8122/mcp" },
        "google-workspace-bmedia": { "type": "http", "url": "http://127.0.0.1:8123/mcp" }
      }
    }

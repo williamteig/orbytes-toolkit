@@ -40,9 +40,8 @@ Using Will's answers as the search lens:
 
 1. **Run `qmd query`** against the wiki collection for each domain/topic surfaced in Phase 1. `qmd` is the hybrid BM25+vector+rerank search — much faster and more accurate than reading files.
    - If `qmd` isn't available from the current directory (it's an MCP server scoped to the 2nd Brain), fall back to reading the relevant index shard:
-     - `wiki/index-orbytes.md` for orbytes/cross-business topics
-     - `wiki/index-tat.md` for TAT/cross-business topics
-     - `wiki/index-shared.md` for cross-business only
+     - `wiki/index-orbytes.md` for orbytes topics (studio + all shared tooling/knowledge)
+     - `wiki/index-trading.md` for personal trading topics (isolated)
 2. **Read the candidate pages** — entities, topics, sources, analyses. Pull the actual page, not just the title.
 3. **Filter to what applies.** Don't dump everything — pull the **insight**, not the page contents. A page may have 5KB of detail but only one paragraph that matters here.
 4. **Cite by wikilink.** Always name the page (`[[page-name]]`) so Will can open the full source in Obsidian.

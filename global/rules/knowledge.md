@@ -37,12 +37,6 @@ When checking, read ALL existing entries in `knowledge/entries/` and scan for it
 - Never modify the 2nd Brain from a client vault
 - Never copy client-specific information into the 2nd Brain (it flows the other direction)
 
-### Exception: The Audition Technique (TAT)
+### TAT is now a standard orbytes client (retired 2026-06-26)
 
-TAT is the **only** project where knowledge flows bidirectionally. Will is 75% owner and TAT-derived knowledge (casting industry expertise, acting-career frameworks, Greg/Robyn teaching material, Vimeo course content) is treated as Will's own domain knowledge, not client-confidential material.
-
-Rules specific to TAT:
-- Ingested TAT knowledge (e.g. Vimeo transcripts, course material, teaching frameworks) should be written into **both** the TAT client vault (`the-audition-technique/knowledge/`) AND the 2nd Brain.
-- In the 2nd Brain, store under a clearly namespaced location (e.g. `TAT/` or `Acting/`) so it never mixes with genuinely cross-cutting knowledge.
-- Operational/commercial TAT material (pricing decisions, internal financials, partner agreements) stays in the client vault only — the exception is for **teaching content and domain knowledge**, not business operations.
-- This exception applies to no other client. If another project ever qualifies, add it explicitly here.
+The former TAT bidirectional-knowledge exception was **retired** when the TAT business wound down. TAT is now maintained as a normal orbytes client — the one-way rule above applies to it like any other client. Historical TAT domain knowledge already in Williams 2nd Brain was archived under `archive/tat/`.

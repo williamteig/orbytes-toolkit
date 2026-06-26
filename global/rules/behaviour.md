@@ -72,8 +72,7 @@ orbytes keeps multiple website stacks current — Framer and Astro+CloudCannon t
 
 When using Google Workspace MCP:
 
-- Default to `google-workspace-orbytes` for orbytes client repos.
-- Default to `google-workspace-tat` for TAT repos.
+- Default to `google-workspace-orbytes` for orbytes client repos (including the maintained TAT website, now an orbytes client).
 - Use `google-workspace-bmedia` only when explicitly requested for legacy inbox/project history.
 - If account context is ambiguous, ask before taking Gmail/Drive actions.
 
