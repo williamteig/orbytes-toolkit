@@ -241,34 +241,35 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
     ```
     Starter demo content will still build — content migration happens after the initial commit.
 
-## Initialize and create GitHub repo
+## Initialize git (per the Repo Management Policy — see `git.md`)
 
-**Framer stack:** git hasn't been initialised yet — run:
+The repo's kind decides whether it touches GitHub: **Framer / doc-only vaults → local git + iCloud, no GitHub. Astro / app repos → GitHub + branches/PRs/worktrees.**
+
+**Framer stack (documentation vault — local git + iCloud only):** git hasn't been initialised yet — run:
 ```bash
 git init && git add -A && git commit -m "Initial scaffold via orbytes-toolkit"
 ```
+That's all for version control. **Do not** run `gh repo create` or add a remote — the project directory lives under iCloud, which is the backup. Leave `github_url` blank in `project.md`, and commit straight to `main` for all future work (no branches, PRs, CI, or worktrees).
 
-**Astro stack:** git is already initialised by `create-astro-component-starter` (with the template's upstream history). Commit the orbytes overlay as a second commit on top:
+**Astro stack (app repo — pushed to GitHub):** git is already initialised by `create-astro-component-starter` (with the template's upstream history). Commit the orbytes overlay as a second commit on top:
 ```bash
 git add -A && git commit -m "chore: overlay orbytes vault and install CloudCannon agent-skills"
 ```
+Then create the private GitHub repo and push:
+```bash
+gh repo create williamteig/<project-name> --private --source=. --push
+```
+**Gotcha:** the Component Starter ships with `.github/workflows/test.yml`, which requires the `workflow` OAuth scope. If push fails with "refusing to allow an OAuth App to create or update workflow ... without `workflow` scope", have the user run:
+```bash
+gh auth refresh -h github.com -s workflow
+```
+then retry the push. Update `project.md` frontmatter with `github_url`.
 
 Then (both stacks):
 
-1. Create private GitHub repo and push:
-   ```bash
-   gh repo create williamteig/<project-name> --private --source=. --push
-   ```
-   **Gotcha (Astro stack):** the Component Starter ships with `.github/workflows/test.yml`, which requires the `workflow` OAuth scope. If push fails with "refusing to allow an OAuth App to create or update workflow ... without `workflow` scope", have the user run:
-   ```bash
-   gh auth refresh -h github.com -s workflow
-   ```
-   then retry the push.
-
-2. Update `project.md` frontmatter with `github_url`.
-3. Print summary: file tree, project links, and next steps.
-4. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)".
-5. Mention: "Use `/orbytes-ingest` to process client input as it arrives. Use `/orbytes-query` to search the knowledge base."
+1. Print summary: file tree, project links, and next steps.
+2. Remind: "Open this folder as a vault in Obsidian (File → Open Vault → Open folder as vault)".
+3. Mention: "Use `/orbytes-ingest` to process client input as it arrives. Use `/orbytes-query` to search the knowledge base."
 
 ## Bridge 2nd Brain context (final step, all stacks)
 
