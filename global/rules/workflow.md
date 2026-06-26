@@ -28,16 +28,18 @@ Never skip stages or begin a later stage before the prior approval gate is passe
 - **Stage X — Branding** (optional, runs in parallel, must complete before Design)
 - **Stage 1 — Research & Discovery**
 - **Stage 2 — Content Writeup + Sitemap** → ✅ Approval Gate 1
-- **Stage 3 — Design** (Figma — lightweight, homepage + one page max) → ✅ Approval Gate 2
+- **Stage M — Moodboard** (optional — one Figma canvas of design inspiration for the client, splashed together from the inspiration library and outside sources; sets the visual direction before Design; runs once enough inspiration is gathered and can overlap with Content/Branding; **not** an approval gate — see `figma.md`)
+- **Stage 3 — Design** (executed in the build stack — Framer / Astro / Webflow — from the moodboard direction; Figma is **not** used to mock up the site) → ✅ Approval Gate 2
 - **Stage 4 — Development** (implementation — typically **Astro + Tailwind** for sites; **Webflow** only when that engagement includes a Webflow build) → ✅ Approval Gate 3
 - **Stage 5 — Launch & Handover**
 
 ## Key Rules
 
-- Three approval gates only — after copy, after design, after development
+- Three approval gates only — after copy, after design, after development (the optional Moodboard stage is **not** a gate)
 - `project.md` is the source of truth — always read it before starting work
 - Branding (Softriver) is always whitelabeled — never mention Softriver to clients
-- Figma design is intentionally lightweight — site implementation defaults to the stack chosen in `project.md` (Astro, Framer, or Webflow)
+- Figma is used **only** for the optional moodboard (design inspiration) — never to mock up or design the site. The site is designed and built in the stack chosen in `project.md` (Framer, Astro, or Webflow)
+- The Moodboard stage is optional; when a moodboard exists, record its link in `project.md` as `moodboard_url` — a standard field across all website projects
 - The qualification form lives on external platforms — project repo is only created once a client is qualified
 
 ## Service Tiers

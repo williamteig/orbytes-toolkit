@@ -29,10 +29,10 @@ Each `project.md` has YAML frontmatter with:
 - `stage` — Current stage (e.g. `1-research`, `3-design`)
 - `stack` — Website stack (astro / framer / webflow)
 - `tier` — Service tier (landing-page / website / custom)
-- `figma_url` — Figma design file URL (base URL only, no query params)
+- `moodboard_url` — Figma moodboard link (optional; base URL only, no query params) — the design-inspiration canvas, when one exists
 - `framer_url` — Framer project URL (if Framer stack)
 - `webflow_url` — Webflow site URL (if Webflow stack)
-- `github_url` — GitHub repo URL
+- `github_url` — GitHub repo URL (app repos only — blank for Framer / doc-only vaults, which stay in local git + iCloud; see `git.md`)
 - `live_url` — Production URL
 
 ## Update Patterns
@@ -52,6 +52,7 @@ Use these exact values for the `stage` field:
 - `x-branding` — Branding in progress (optional)
 - `1-research` — Research & Discovery
 - `2-content` — Content Writeup
+- `m-moodboard` — Moodboard in progress (optional)
 - `3-design` — Design
 - `4-development` — Development
 - `5-launch` — Launch & Handover

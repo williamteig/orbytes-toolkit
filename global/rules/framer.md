@@ -26,6 +26,8 @@ repo/
 
 The Framer project URL is stored in `project.md` frontmatter as `framer_url`.
 
+**Repo management:** a Framer repo is a **documentation vault** — local git + iCloud only, **never pushed to GitHub** (no remote, branches, PRs, or worktrees; commit straight to `main`). The site itself lives in Framer's cloud. See `git.md` › Repo Management Policy.
+
 ## MCP Access — Proofly (primary, as of 2026-06-02)
 
 orbytes uses **Proofly MCP** (112 tools, headless-capable) as the primary MCP for Framer projects. The first-party `framer-mcp` remains a fallback for in-session relay work, but it requires its plugin tab open every session — Proofly doesn't, once set up. Full reference: 2nd Brain [[proofly]].

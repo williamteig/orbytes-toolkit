@@ -14,7 +14,7 @@ For any decisions not yet made, ask one at a time:
    - **Astro + CloudCannon** — for code-heavy builds needing full codebase + Git-based CMS. Scaffolded from `CloudCannon/astro-component-starter` (official starter, three-file component pattern) with CloudCannon agent-skills installed per-project.
 4. **Service tier** — Landing Page (single page, fixed price) or Full Website (multi-page with CMS, fixed price)
 5. **Branding** — Outsourced to Softriver (default) / Client providing / Brand already exists / No branding needed
-6. **Figma file URL** *(optional)* — paste URL or "not yet" (Figma is used on-request for mockups, not foundational)
+6. **Moodboard URL** *(optional)* — paste the Figma moodboard link or "not yet" (Figma is used only for the optional design-inspiration moodboard, Stage M — not for site design)
 7. **Framer project URL** *(Framer only)* — paste URL or "not yet"
 8. **CloudCannon hosting mode** *(Astro only)* — CloudCannon-built (default — visual preview in the editor) / Headless + Cloudflare Pages (when the client prioritises an existing Cloudflare deploy pipeline over visual preview)
 
@@ -122,7 +122,7 @@ Then scaffold the project in `/Users/williamteig/Documents/AppDev/`:
    - Ensure `client_contact_name` and `client_contact_email` are populated from the gathered contact details
    - Keep `branding_vendor_domains` seeded with Softriver defaults unless a different branding vendor is explicitly chosen
    - For Framer projects, keep `framepad_template_url` set to `https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp`
-   - Set `figma_url:`, `framer_url:` as applicable
+   - Set `moodboard_url:`, `framer_url:` as applicable
    - Remove the branding stage section if "No branding needed"
 
 8. **Generate `design.md`** from the template at `$ORBYTES_TOOLKIT_PATH/website/templates/design.md`:

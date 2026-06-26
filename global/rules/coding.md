@@ -26,7 +26,7 @@ Match LLM autonomy to the task. This is non-negotiable — different work gets d
 - Write clean, readable code with meaningful names — avoid abbreviations
 - Commit messages should be concise and describe the "why" not just the "what"
 - Use conventional commit format: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
-- All repos are private under the `williamteig` GitHub account
+- App repos are private under the `williamteig` GitHub account; documentation vaults (Framer / pure-doc) are local git + iCloud only, never pushed — see `git.md`
 - Don't add comments unless the logic isn't self-evident
 - Don't add error handling for scenarios that can't happen — only validate at system boundaries
 - Don't create helpers or abstractions for one-time operations

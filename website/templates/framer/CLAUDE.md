@@ -71,7 +71,7 @@ On a Framer project, the LLM assists with:
 
 ## Design System
 
-All design and development happens in Framer. No separate design tool (Figma is dropped). Use Framepad as the component/design system starting point for new builds.
+All design and development happens in Framer — no separate design tool is used to build the site. Figma is used only for the optional upstream moodboard (design inspiration); it is never used to mock up or design the Framer site. Use Framepad as the component/design system starting point for new builds.
 
 **Canonical Framepad remix URL (tracking stripped):** `https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp`
 

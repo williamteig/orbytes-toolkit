@@ -49,8 +49,8 @@ orbytes-toolkit/
 - **Service tiers:** Landing Page (fixed price), Full Website (fixed price), Custom Build (enterprise)
 - **Website stacks:** Framer (primary for new work), Astro + CloudCannon (code-heavy projects), Webflow (legacy/selective)
 - **Tools:** Obsidian (project management via markdown), GitHub (version control), Cloudflare/Vercel (deploy), Softriver (whitelabel branding partner)
-- **Design tools (on request, not foundational):** Figma, Paper.design — used for mockups and graphics when needed, not required for every project
-- **Pipeline:** Stage X Branding (optional) → Stage 1 Research → Stage 2 Content (Gate 1) → Stage 3 Design (Gate 2) → Stage 4 Development (Gate 3) → Stage 5 Launch
+- **Design tools:** Figma is used **only** for the optional design-inspiration moodboard (Stage M) — never to design the site. Paper.design on request for quick graphics. The site is designed and built in the stack (Framer / Astro / Webflow)
+- **Pipeline:** Stage X Branding (optional) → Stage 1 Research → Stage 2 Content (Gate 1) → Stage M Moodboard (optional) → Stage 3 Design (Gate 2) → Stage 4 Development (Gate 3) → Stage 5 Launch
 - **Key rules:** Three approval gates only. `project.md` is always the source of truth. Branding is always whitelabeled. Never skip stages.
 
 ## The /new-orbytes-website command

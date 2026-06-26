@@ -16,7 +16,7 @@ stack: "{{STACK}}"
 start_date: "{{START_DATE}}"
 target_launch: ""
 branding: "{{BRANDING}}"
-figma_url: ""
+moodboard_url: ""
 framer_url: ""
 framepad_template_url: "https://framer.com/projects/new?duplicate=wLSqQMGhU0RNcbkxXBnp"
 webflow_url: ""
@@ -42,9 +42,15 @@ live_url: ""
   - [ ] Homepage copy
   - [ ] Inner page copy
   - [ ] All pages reviewed
+- [ ] **M. Moodboard** *(optional — Figma design-inspiration canvas)*
+  - [ ] Inspiration gathered to `discovery/inspirational-material/`
+  - [ ] References splashed onto one Figma canvas
+  - [ ] `moodboard_url` set in frontmatter
+  - [ ] Shared with client to agree visual direction
 - [ ] **3. Design**
-  - [ ] Homepage mockup (Figma)
-  - [ ] Mobile mockup
+  - [ ] Design direction confirmed (from moodboard, if used)
+  - [ ] Homepage designed in the build stack
+  - [ ] Mobile / responsive layout
   - [ ] Client review
 - [ ] **4. Development**
   - [ ] Design system / tokens setup

@@ -34,7 +34,7 @@ The bridge skill itself starts with a questionnaire — it asks Will what he alr
 - **Claude Code / Cursor** — Development, copywriting, project automation
 
 **On request (not foundational):**
-- **Figma** — Mockups, graphics, branding assets when needed
+- **Figma** — The optional design-inspiration moodboard only (Stage M) — never to mock up or design the site
 - **Paper.design** — Quick design mockups with AI assistance
 
 ## Website Stacks
@@ -52,6 +52,7 @@ All website-tier projects have a local repo for `project.md`, `design.md`, and a
 - **orbytes-qualify** — Walk a prospective client through the qualification checklist.
 - **orbytes-scaffold** — Scaffold a new client project with correct stack and structure.
 - **orbytes-discovery** — Process client discovery questionnaire responses.
+- **orbytes-moodboard** — Build the photography moodboard (Stage M): derive image keywords from discovery, research references on Yandex, curate into the inspiration library, and assemble the moodboard in the client's Figma file.
 - **orbytes-audit** — Audit pipeline checkmarks against actual repo state. Run before gate approvals or health checks.
 - **orbytes-ingest** — Ingest client comms, docs, and feedback into the project knowledge base.
 - **orbytes-query** — Search the knowledge base for what the client said about a topic.
@@ -74,7 +75,7 @@ Detailed rules and conventions are in `~/.claude/rules/` (Claude Code) or `~/.cu
 - `cloudflare.md` — Pages, Workers, secrets, previews
 - `cloudcannon.md` — Git-backed CMS editing and branch workflow
 - `webflow.md` — Webflow site management (when engaged)
-- `figma.md` — Figma URL handling, design mockups (when engaged)
+- `figma.md` — Figma's only role (the optional moodboard) + URL handling
 - `copy.md` — Copy process: voice, page strategy, drafting, review
 - `inspiration.md` — Inspiration ingestion: folder-per-reference, image renaming, notes template
 - `knowledge.md` — Knowledge base ingestion, retrieval, and contradiction detection
