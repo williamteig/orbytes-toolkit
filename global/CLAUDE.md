@@ -28,7 +28,8 @@ The bridge skill itself starts with a questionnaire — it asks Will what he alr
 ## Tools & Platforms
 
 - **Obsidian / Markdown** — Project management, client notes, brand kit, copy drafts
-- **GitHub** — Version control under `williamteig` personal account (private repos)
+- **GitHub** — Version control for **app repos** (Astro / code projects), private under `williamteig`. Framer / doc-only vaults are **local git + iCloud, not pushed** — see `git.md` › Repo Management Policy
+- **iCloud** — Backup for documentation vaults (the project directory syncs through iCloud; that is the backup, in place of GitHub)
 - **Cloudflare / Vercel** — Deployment (varies per project)
 - **Softriver** — Whitelabeled branding partner (delivers logo, palette, fonts)
 - **Claude Code / Cursor** — Development, copywriting, project automation
@@ -46,6 +47,8 @@ The bridge skill itself starts with a questionnaire — it asks Will what he alr
 | **Webflow** | Legacy/selective. Only when the engagement specifically uses Webflow. |
 
 All website-tier projects have a local repo for `project.md`, `design.md`, and any custom code (even Framer/Webflow projects may have CDN-delivered scripts).
+
+**Repo management (governs every repo):** if a repo contains an **app/codebase** (Astro, custom builds), *all* its code **and** docs live in that one repo, and it's pushed to **GitHub** and managed with branches / PRs / worktrees. If a repo is a **documentation vault** (Framer, pure-doc — no code inside), it's **local git + iCloud only, never pushed to GitHub**, and you commit straight to `main` (no branches, PRs, CI, or worktrees). Full detail in `git.md`.
 
 ## Skills
 
@@ -65,7 +68,7 @@ Detailed rules and conventions are in `~/.claude/rules/` (Claude Code) or `~/.cu
 
 - `behaviour.md` — Global behavioural rules: never fabricate, check gates with tools, draft in target tool, verify-in-app over guessing, session scope, multi-stack stance, William's email voice (always applies)
 - `coding.md` — Naming, commit style, code quality (always applies)
-- `git.md` — GitHub conventions, branch/PR patterns (always applies)
+- `git.md` — **Repo management policy** (doc vaults = local git + iCloud, no GitHub; app repos = GitHub + branches/PRs/worktrees) + commit conventions (always applies)
 - `workflow.md` — Stage order, approval gates, service tiers
 - `seo.md` — SEO execution policy (opt-in only, post-build default)
 - `project-management.md` — project.md as source of truth, update patterns
